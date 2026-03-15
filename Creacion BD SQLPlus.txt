@@ -1,0 +1,12 @@
+
+> sqlplus / as sysdba
+> alter session set "_oracle_script"=true;
+> create tablespace tbsSoundShelf datafile 'dtSoundShelf.dbf' size 20M;
+> create user SoundShelf identified by Basedatos123456
+2 default tablespace tbsSoundShelf
+3 temporary tablespace temp
+4 quota unlimited on tbsSoundShelf;
+
+---- Para darle privilegios de usuario
+
+> grant connect, dba, create session to SoundShelf;
