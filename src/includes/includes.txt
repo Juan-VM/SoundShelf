@@ -1,0 +1,1 @@
+Aqui van a ir los archivos reutilizables del sistema (header/footer).
