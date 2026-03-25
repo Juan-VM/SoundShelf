@@ -232,3 +232,9 @@ BEGIN
 
     RETURN v_cursor;
 END;
+
+/*
+    El proyecto tiene 8 epicas con varias funcionalidades c/u, estas son las funcionalidades que se podian crear
+    a nivel de BD de 3 epicas (mas o menos un 30% del proyecto). Las epicas que incluimos en esta entrega son:
+    Epica 1, 2 y 7.
+*/
