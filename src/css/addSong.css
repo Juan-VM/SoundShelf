@@ -18,3 +18,7 @@ textarea:focus {
     outline: none;
     border-color: rgba(186, 158, 255, 0.4) !important;
 }
+
+label{
+    font-size: 15px;
+}

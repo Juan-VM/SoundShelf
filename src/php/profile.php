@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Profile - The Sonic Archive</title>
+    <title>Perfil | SoundShelf</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -97,15 +97,15 @@
             <!-- Page Header -->
             <div class="mb-12 flex items-end justify-between">
                 <div>
-                    <h2 class="text-5xl font-extrabold font-headline text-on-surface tracking-tighter">Profile Settings</h2>
-                    <p class="text-on-surface-variant mt-2 font-body max-w-md">Manage your curator identity, account preferences, and archival status.</p>
+                    <h2 class="text-5xl font-extrabold font-headline text-on-surface tracking-tighter">Configuracion Perfil</h2>
+                    <p class="text-on-surface-variant mt-2 font-body max-w-md">Maneja tu identidad de forma segura, actualiza tus datos o visualizalos.</p>
                 </div>
                 <div class="flex gap-4 pb-2">
                     <a href="dashboard.php" class="px-6 py-2.5 rounded-lg border border-outline-variant/40 text-primary font-semibold hover:bg-surface-bright transition-colors text-sm font-label uppercase tracking-widest">
-                        Cancel
+                        Cancelar
                     </a>
                     <button class="px-6 py-2.5 rounded-lg primary-gradient text-on-primary-fixed font-bold sonic-shadow hover:scale-[1.02] transition-transform text-sm font-label uppercase tracking-widest">
-                        Save Changes
+                        Guardar Cambios
                     </button>
                 </div>
             </div>
@@ -125,17 +125,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 class="mt-6 text-2xl font-bold font-headline">Elena Vance</h3>
-                            <p class="text-on-surface-variant font-label uppercase text-xs tracking-[0.2em]">Master Curator</p>
+                            <h3 class="mt-6 text-2xl font-bold font-headline">Nombre Usuario</h3>
+                            <p class="text-on-surface-variant font-label uppercase text-xs tracking-[0.2em]">correo@ejemplo.com</p>
                         </div>
                         <div class="mt-10 grid grid-cols-2 gap-2 text-center">
                             <div>
-                                <p class="text-xl font-bold font-headline">1.2k</p>
-                                <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Tracks</p>
+                                <p class="text-xl font-bold font-headline">1.2</p>
+                                <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Canciones</p>
                             </div>
                             <div class="border-l border-outline-variant/10">
                                 <p class="text-xl font-bold font-headline">48</p>
-                                <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Playlists</p>
+                                <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Listas</p>
                             </div>
                         </div>
                     </div>
@@ -145,23 +145,21 @@
                 <div class="col-span-12 lg:col-span-8">
                     <div class="bg-surface-container-low rounded-xl p-10 sonic-shadow border-t border-white/5 h-full">
                         <div class="flex justify-between items-center mb-10">
-                            <h3 class="text-xl font-bold font-headline">Account Information</h3>
-                            <button class="flex items-center gap-2 text-primary hover:opacity-80 transition-all group">
-                                <span class="material-symbols-outlined text-xl">edit</span>
-                                <span class="text-xs font-label uppercase tracking-widest font-semibold">Edit Profile</span>
-                            </button>
+                            <h3 class="text-xl font-bold font-headline">Informacion Personal</h3>
                         </div>
                         <form method="POST" action="" class="space-y-8">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Display Name</label>
-                                    <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none" type="text" name="display_name" value="Elena Vance"/>
+                                    <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Nombre Usuario</label>
+                                    <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none"
+                                     type="text" name="display_name" value="Nombre"/>
                                 </div>
                                 
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Email Address</label>
-                                <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none" type="email" name="email" value="elena.vance@sonicarchive.io"/>
+                                <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Correo</label>
+                                <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none"
+                                 type="email" name="email" value="correo@usuario.com"/>
                             </div>
     
                         </form>

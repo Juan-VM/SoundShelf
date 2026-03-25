@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Playlist Management | The Sonic Archive</title>
+    <title>Playlist | SoundShelf</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -96,30 +96,27 @@
         <section class="flex flex-col md:flex-row gap-12 items-end mb-16 relative">
             <div class="relative group">
                 <div class="w-72 h-72 rounded-xl overflow-hidden sonic-shadow ring-1 ring-primary/20">
-                    <img alt="Playlist Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuDjCBHHvXPa1hMgay5f5JfVzPedR8CpEsVdMoYB5YmOL4H4AMnyTiOjxPp9klxu8-ILetBWPySqenjzCb0zbnvu5BMXDkIW_40HNWchTVVUqG-_XcNjwidEo4OVQKBuv2ZJdUDRfXMVD8Y45sL0qifsX2u3P1JnVU3hDXdI6v7raw5zlnLjQAsTbQrIJVe5iTRuaxeqQQbaKI713Y8bCiQwzgs_DOLXoYyCjTVgDd8jCwtqyq1MO6vCUthRHrRnzeI01Jk1QfYuM6"/>
+                    <img alt="Playlist Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                     src="../images/playlist.jpg"/>
                 </div>
             </div>
             <div class="flex-1 flex flex-col gap-4">
-                <h2 class="text-6xl font-extrabold font-headline tracking-tighter text-on-surface leading-tight">Midnight Sessions vol. 4</h2>
-                <p class="text-on-surface-variant max-w-xl text-lg leading-relaxed">
-                    A curated deep-dive into late-night electronic textures, ambient soundscapes, and high-bitrate archival pulses.
-                    <span class="text-primary/80">Continuous flow for creative focus.</span>
-                </p>
+                <h2 class="text-6xl font-extrabold font-headline tracking-tighter text-on-surface leading-tight">Titulo Playlist</h2>
                 <div class="flex items-center gap-6 mt-4">
                     <div class="flex flex-col">
-                        <span class="text-[10px] uppercase font-label text-on-surface-variant tracking-widest">Total Tracks</span>
-                        <span class="text-xl font-bold font-headline text-on-surface">42 Tracks</span>
+                        <span class="text-[10px] uppercase font-label text-on-surface-variant tracking-widest">Total Canciones</span>
+                        <span class="text-xl font-bold font-headline text-on-surface">42</span>
                     </div>
                     <div class="w-[1px] h-8 bg-outline-variant/30"></div>
                     <div class="flex gap-4">
-                        <button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
+                        <a href="" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
                             <span class="material-symbols-outlined text-lg">edit</span>
-                            Edit Playlist Name
-                        </button>
-                        <button class="flex items-center gap-2 text-on-surface-variant hover:text-error transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
+                            Editar Lista
+                        </a>
+                        <a href="" class="flex items-center gap-2 text-on-surface-variant hover:text-error transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
                             <span class="material-symbols-outlined text-lg">delete</span>
-                            Delete Playlist
-                        </button>
+                            Eliminar Lista
+                        </a>
                     </div>
                 </div>
             </div>
@@ -128,22 +125,22 @@
         <!-- Track List Section -->
         <section class="bg-surface-container-low rounded-xl overflow-hidden shadow-2xl border border-outline-variant/10 mb-12">
             <div class="flex justify-between items-center p-8 bg-surface-container-low/50">
-                <h3 class="text-2xl font-bold font-headline tracking-tight">Archive Tracks</h3>
-                <button class="flex items-center gap-2 primary-gradient px-6 py-2.5 rounded-xl text-on-primary-fixed font-bold font-headline text-sm hover:shadow-[0_0_20px_rgba(186,158,255,0.4)] transition-all">
+                <h3 class="text-2xl font-bold font-headline tracking-tight">Canciones</h3>
+                <a href="" class="flex items-center gap-2 primary-gradient px-6 py-2.5 rounded-xl text-on-primary-fixed font-bold font-headline text-sm hover:shadow-[0_0_20px_rgba(186,158,255,0.4)] transition-all">
                     <span class="material-symbols-outlined text-lg">add</span>
-                    Add Song to Playlist
-                </button>
+                    Agregar Cancion
+                </a>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-surface-container-high/50 border-b border-outline-variant/10">
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Title</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Artist</th>
+                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Titulo</th>
+                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Artista</th>
                             <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Album</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Genre</th>
+                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Genero</th>
                             <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Rating</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant text-right">Manage</th>
+                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant text-right">Gestion</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-outline-variant/5">
@@ -151,57 +148,19 @@
                         <tr class="group hover:bg-surface-bright transition-colors">
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-4">
-                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtecnEOBbBYf8CAS2YgVu_5ErRf8_702wqaU-zjHfL3llj1S1mTb4M-Zls3BVy4nrRo446AmCJ3KwJL4CZSwGHd9RDKX5DcK2jDzYjpnw8lu8a4gpAHUwttwsQTGBXCG8VoLOuwMu8It_p6uxrhuW_NP8v2PL3F3FNCN3yBefed5Rnrl0fAibU9wsJ4s1fikq9bZwSW5d5OXCeDbKbYXTxyO0VschkKOM5Wp50NHN6uJum4O6SYNhqtU1VBz2PmHSbpWYzqg6wllkB"/>
-                                    <span class="font-semibold text-on-surface text-base">Hyper-Space Resonance</span>
+                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform"
+                                     src="../images/musicaIcono.png"/>
+                                    <span class="font-semibold text-on-surface text-base">Titulo</span>
                                 </div>
                             </td>
-                            <td class="px-8 py-6 text-on-surface-variant font-medium">Lumina Pulse</td>
-                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Neon Drift</td>
-                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">Synthwave</span></td>
+                            <td class="px-8 py-6 text-on-surface-variant font-medium">Artista</td>
+                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Album</td>
+                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">Genero</span></td>
                             <td class="px-8 py-6"><div class="flex items-center gap-2"><span class="text-primary font-black text-lg">9.2</span></div></td>
-                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3"><button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></button><button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg"><span class="material-symbols-outlined">delete</span></button></div></td>
-                        </tr>
-                        <!-- Row 2 -->
-                        <tr class="group hover:bg-surface-bright transition-colors">
-                            <td class="px-8 py-6">
-                                <div class="flex items-center gap-4">
-                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7YBtkS1fC6bWDI-dqB_JkbiQmi_Hr394zMIxCgT40Pk1nA8dyjFb1K55rrjWGLMLcl7u5fyejddqxy2Nn2JURnJIFRGmrWZ2VjPC9hG_j8IEVI0f2sg28PsPnEp40g_FG0jsdav2qqmlnl_Aj5BdcC2p17uOgU34VNoxLz-60gJ86rkf0ZnzxSIUeUuBd3dSeZAL0uDMLg_3U_CCrduzt9MnDL_LabnExa6MC2Tt5cwbzjBqkJTBtxD5fR7YHz7JspBM2EwXFkuls"/>
-                                    <span class="font-semibold text-on-surface text-base">Midnight Echoes</span>
-                                </div>
+                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3">
+                                <a href="editSong.php" class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></button>
+                                <a href="removeSongList.php" class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg"><span class="material-symbols-outlined">delete</span></button></div>
                             </td>
-                            <td class="px-8 py-6 text-on-surface-variant font-medium">The Archive</td>
-                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Dark Matter</td>
-                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">Ambient</span></td>
-                            <td class="px-8 py-6"><div class="flex items-center gap-2"><span class="text-primary font-black text-lg">8.5</span></div></td>
-                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3"><button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></button><button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg"><span class="material-symbols-outlined">delete</span></button></div></td>
-                        </tr>
-                        <!-- Row 3 -->
-                        <tr class="group hover:bg-surface-bright transition-colors">
-                            <td class="px-8 py-6">
-                                <div class="flex items-center gap-4">
-                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl-VNlxjGie8yms3V8ZDlxVUcNmhdtwxHFyhIJq0QfYqWw6WiAzJKrwE5DqkUoqoL5_-RehJ7Fw73CzZAIVpsNKfCG7rJ4fOb4mTBf-7JWPsQBCnlnRTRGExFtYvRJXpZbjBbghIPGTKC2jL4-_52IOmCAUhH5N5MrwPxbJI4ST0Die3uZq-0dUq_5-3xNxjnfF0KgmmR1TOGpGsSvJNLQX7XJr2nlb87_cxK7SdogO-E1Nif70NcYn_LJp-PGLj6blmygv3U-8xU3"/>
-                                    <span class="font-semibold text-on-surface text-base">Glitch Protocol X</span>
-                                </div>
-                            </td>
-                            <td class="px-8 py-6 text-on-surface-variant font-medium">Cyber Link</td>
-                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Node Origins</td>
-                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">IDM</span></td>
-                            <td class="px-8 py-6"><div class="flex items-center gap-2"><span class="text-tertiary font-black text-lg">7.1</span></div></td>
-                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3"><button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></button><button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg"><span class="material-symbols-outlined">delete</span></button></div></td>
-                        </tr>
-                        <!-- Row 4 -->
-                        <tr class="group hover:bg-surface-bright transition-colors">
-                            <td class="px-8 py-6">
-                                <div class="flex items-center gap-4">
-                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfC7kM3PMycuWVzAOTdHBuenig1u9ixgnTgAebQ2QVSZCcroidIdEbRQPEb7hFfq91UYen1JWocD-4xVnUZa16iXnVCf9uvKg0d5LZZvclBvbLnW1bjv17HPF-tJkzm9r4SiREe9N_DGhwAhFXu_FUaUlB8LFGP6Nv-dOIN3Nl9fyHHkn94flagVBVUX_HBw4bAPWX9Kt_5ybWclz1b0bg-ZVefSXVy8hW6ols_CZWZ0AObjk3gJXaWKZIRU_86ci-4vhT_fCXsxL9"/>
-                                    <span class="font-semibold text-on-surface text-base">Sub-Atomic Bass</span>
-                                </div>
-                            </td>
-                            <td class="px-8 py-6 text-on-surface-variant font-medium">Freq Modulator</td>
-                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Single Pulse</td>
-                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">Deep Dub</span></td>
-                            <td class="px-8 py-6"><div class="flex items-center gap-2"><span class="text-primary font-black text-lg">9.8</span></div></td>
-                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3"><button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></button><button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg"><span class="material-symbols-outlined">delete</span></button></div></td>
                         </tr>
                     </tbody>
                 </table>

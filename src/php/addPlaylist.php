@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>New Playlist - The Sonic Archive</title>
+    <title>Nueva Lista | SoundShelf</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -96,7 +96,7 @@
             <!-- Header -->
             <div class="mb-12 text-left">
                 <h2 class="text-5xl md:text-6xl font-extrabold font-headline leading-tight tracking-tighter text-on-surface">
-                    Create New <br/> <span class="text-primary italic">Collection.</span>
+                    Crear Nueva <br/> <span class="text-primary italic">Lista</span>
                 </h2>
             </div>
 
@@ -106,16 +106,18 @@
                 <form method="POST" action="" class="relative z-10 space-y-10">
                     <div class="space-y-3">
                         <label class="block text-sm font-bold text-on-surface-variant uppercase tracking-widest px-1" for="playlist-title">
-                            Playlist Title
+                            Titulo de la lista
                         </label>
-                        <input class="w-full bg-surface-container-highest border-none rounded-xl px-6 py-5 text-xl font-headline text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/40 transition-all outline-none" id="playlist-title" name="playlist_title" placeholder="e.g., Midnight Studio Sessions" type="text"/>
+                        <input class="w-full bg-surface-container-highest border-none rounded-xl px-6 py-5 text-xl font-headline text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/40 transition-all outline-none"
+                         id="playlist-title" name="playlist_title" placeholder="Titulo" type="text"/>
                     </div>
                     <div class="flex flex-col gap-4">
-                        <button class="w-full py-5 rounded-xl bg-gradient-to-br from-primary-dim to-primary text-black font-extrabold text-lg font-headline shadow-[0_10px_30px_rgba(186,158,255,0.2)] hover:shadow-[0_15px_40px_rgba(186,158,255,0.3)] transition-all active:scale-[0.98]" type="submit">
-                            Create Playlist
+                        <button class="w-full py-5 rounded-xl bg-gradient-to-br from-primary-dim to-primary text-black font-extrabold text-lg font-headline shadow-[0_10px_30px_rgba(186,158,255,0.2)] hover:shadow-[0_15px_40px_rgba(186,158,255,0.3)] transition-all active:scale-[0.98]"
+                         type="submit">
+                            Crear Lista
                         </button>
                         <a href="library.php" class="w-full py-4 text-on-surface-variant font-bold text-sm hover:text-on-surface transition-colors uppercase tracking-widest text-center block">
-                            Cancel
+                            Cancelar
                         </a>
                 </form>
             </div>

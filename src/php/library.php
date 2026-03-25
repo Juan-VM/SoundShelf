@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>The Sonic Archive | Music Library</title>
+    <title>Libreria | SoundShelf</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -95,17 +95,17 @@
         <!-- Header & Tabs -->
         <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div>
-                <h2 class="text-5xl font-extrabold font-headline tracking-tight mb-4">Library</h2>
+                <h2 class="text-5xl font-extrabold font-headline tracking-tight mb-4">Libreria</h2>
                 <div class="flex gap-10">
                     <button class="group relative pb-2">
-                        <span class="font-headline text-lg font-bold text-primary">Playlists</span>
+                        <span class="font-headline text-lg font-bold text-primary">Listas</span>
                         <div class="absolute bottom-0 left-0 w-full h-1 bg-primary rounded-full"></div>
                     </button>
                 </div>
             </div>
             <a href="addPlaylist.php" class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-xl shadow-[0_0_30px_rgba(186,158,255,0.2)] hover:scale-105 transition-all font-bold">
                 <span class="material-symbols-outlined">add_circle</span>
-                Create Playlist
+                Crear Lista
             </a>
         </div>
 
@@ -120,24 +120,8 @@
                     <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJTWPaxVrAjW_qaZfQ4D1_jrotDVXaZ9Y3QK3ByGJ84whBK4JznZzvkn7rww898hykLmkjLoEBQ30MrDg7kwiLhfzmwSVa-i6_Vj8ZPvTwWOlVpw24svq8wgLOXZB-VqLvHGMsVvkEyYMsYE4Tjn4k6XUVgAgxQ53TSwGvAIBcbTGBIZCPHilrXax-LGw-YHzhjuhRTdDuhtym94by8HiGUE3oms2IRlZQHieJeHlUi1UWENPJdchS1KD_435jhqoMLQTNCZoVBeJK" alt="Late Night Sessions"/>
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                 </div>
-                <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">Late Night Sessions</h4>
-                <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">42 Tracks</p>
-            </a>
-            <a href="playlist.php" class="group cursor-pointer">
-                <div class="relative aspect-square rounded-2xl overflow-hidden mb-4 shadow-xl">
-                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqEqNnTQht9w7UeqACnJhWrrHMVtXn64FrvkP7895j1aEVscl_u-Pj7us0Jpvs0i26PiXOoOXFQiO1uogYB0CZbDK9lyjqgLZVMj6c8NeohrMpDhKRk5p9qKe-gPoeGEJ4K8jaBM9s0-A15FBBvdx5sTDm-NimmohjKy3Zp-PkdbCNN7ewKieWSeJ0xFbQEPjE9UcJ97ILpGGaMJHBxhVWOXRQ5czP23YN55jmznTEQGC2k_19E9dC-EhFq2XrtLE2wS_dyXO1bxmr" alt="Ambient Textures"/>
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-                </div>
-                <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">Ambient Textures</h4>
-                <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">18 Tracks</p>
-            </a>
-            <a href="playlist.php" class="group cursor-pointer">
-                <div class="relative aspect-square rounded-2xl overflow-hidden mb-4 shadow-xl">
-                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmyvmglQZjOf9CZHAHvpTBUNxFFA6Ko2PLf6GHadnj8h8w6UR9gT_7vJ5yYHDRWHAGiZTzoXh3KpT-onqn9D6V3zKs1VN8XWIwFtQjxCARRFg6IPDe7Hgz3U2UH06IO2OMj8gzbDZzNeBy3GGpEQf1oDqUTrBFOTh0UWJUUKFELqh-hooUlOCdxZcVQiKUJN7ciLiNiScUst2zYT3hD_SCeGLhXX95bcqcmQV-jLWFKV1JPqcqoUjy50DoNrsCTABC5DG1WzmFA1eF" alt="Digital Decay"/>
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-                </div>
-                <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">Digital Decay</h4>
-                <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">25 Tracks</p>
+                <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">Titulo</h4>
+                <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">TotCanciones+" Canciones"</p>
             </a>
         </div>
 

@@ -233,12 +233,9 @@
 
                                         <td class="px-8 py-6 text-right">
                                             <div class="flex justify-end gap-3">
-                                                <button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg">
+                                                <a href="editSong.php" class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg">
                                                     <span class="material-symbols-outlined">edit</span>
-                                                </button>
-                                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error/10 rounded-lg">
-                                                    <span class="material-symbols-outlined">delete</span>
-                                                </button>
+                                                </a>
                                             </div>
                                         </td>
 
