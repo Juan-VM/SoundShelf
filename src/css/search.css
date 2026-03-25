@@ -1,0 +1,20 @@
+body {
+    background-color: #060e20;
+    color: #dee5ff;
+    font-family: 'Inter', sans-serif;
+}
+
+.headline-font { font-family: 'Manrope', sans-serif; }
+
+.glass-panel {
+    background: rgba(25, 37, 64, 0.65);
+    backdrop-filter: blur(24px);
+}
+
+.sonic-gradient {
+    background: linear-gradient(135deg, #8455ef 0%, #ba9eff 100%);
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

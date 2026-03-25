@@ -1,0 +1,267 @@
+<?php ?>
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Edit Song | The Sonic Archive</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="../css/editSong.css"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#000000",
+                        "secondary-fixed": "#e4c6ff",
+                        "primary": "#ba9eff",
+                        "outline-variant": "#40485d",
+                        "on-secondary-fixed": "#4b147d",
+                        "surface-container-low": "#091328",
+                        "secondary": "#c08cf7",
+                        "on-tertiary-fixed": "#380018",
+                        "error-dim": "#d73357",
+                        "secondary-container": "#5e2c91",
+                        "background": "#060e20",
+                        "on-secondary-fixed-variant": "#69379c",
+                        "on-error": "#490013",
+                        "surface-bright": "#1f2b49",
+                        "surface": "#060e20",
+                        "outline": "#6d758c",
+                        "on-secondary-container": "#e3c4ff",
+                        "inverse-surface": "#faf8ff",
+                        "tertiary-fixed-dim": "#f67ca3",
+                        "primary-dim": "#8455ef",
+                        "on-surface-variant": "#a3aac4",
+                        "surface-container-highest": "#192540",
+                        "on-surface": "#dee5ff",
+                        "tertiary-dim": "#f0779d",
+                        "surface-container-high": "#141f38",
+                        "on-primary-fixed-variant": "#370086",
+                        "on-tertiary-container": "#59002a",
+                        "surface-dim": "#060e20",
+                        "on-tertiary": "#6a0934",
+                        "on-background": "#dee5ff",
+                        "tertiary": "#ff97b5",
+                        "on-tertiary-fixed-variant": "#701039",
+                        "primary-container": "#ae8dff",
+                        "inverse-primary": "#6e3bd7",
+                        "surface-container-lowest": "#000000",
+                        "on-primary-container": "#2b006e",
+                        "surface-tint": "#ba9eff",
+                        "inverse-on-surface": "#4d556b",
+                        "surface-container": "#0f1930",
+                        "on-error-container": "#ffb2b9",
+                        "secondary-fixed-dim": "#dab4ff",
+                        "error-container": "#a70138",
+                        "tertiary-container": "#fd81a8",
+                        "tertiary-fixed": "#ff8eb0",
+                        "primary-fixed": "#ae8dff",
+                        "on-primary": "#39008c",
+                        "error": "#ff6e84",
+                        "surface-variant": "#192540",
+                        "secondary-dim": "#bb87f1",
+                        "on-secondary": "#390068",
+                        "primary-fixed-dim": "#a27cff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen overflow-x-hidden">
+
+    <!-- SideNavBar -->
+    <aside class="bg-[#091328] dark:bg-slate-950 h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-8 px-6 z-50">
+        <div class="mb-12">
+            <h1 class="text-2xl font-extrabold tracking-tighter text-[#ba9eff] dark:text-violet-400 font-headline">The Sonic Archive</h1>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1 font-label">High-Fidelity Curator</p>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#ba9eff] dark:text-violet-400 font-bold border-r-4 border-[#ba9eff] dark:border-violet-500 bg-[#1f2b49]/30 dark:bg-slate-900/50 transition-colors duration-200 group"
+             href="dashboard.php">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-label uppercase text-xs tracking-wider">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
+             href="library.php">
+                <span class="material-symbols-outlined">library_music</span>
+                <span class="font-label uppercase text-xs tracking-wider">Library</span>
+            </a>
+            <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
+             href="search.php">
+                <span class="material-symbols-outlined">search</span>
+                <span class="font-label uppercase text-xs tracking-wider">Search</span>
+            </a>
+            <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
+             href="profile.php">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-label uppercase text-xs tracking-wider">Profile</span>
+            </a>
+        </nav>
+        
+        <a href="addSong.php" class="mt-8 w-full bg-gradient-to-br from-primary-dim to-primary text-on-primary-fixed font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(186,158,255,0.2)] transition-all active:scale-95">
+            <span class="material-symbols-outlined">add</span>
+            <span class="text-sm">Add Track</span>
+        </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 min-h-screen flex flex-col">
+
+        <!-- TopNavBar -->
+        <header class="flex justify-between items-center w-full px-8 h-16 bg-surface-container-low sticky top-0 z-40">
+            <div class="flex items-center gap-4">
+                <span class="text-on-surface-variant font-medium">Archive / Tracks / Edit</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="relative group">
+                    <span class="absolute inset-y-0 left-3 flex items-center text-outline">
+                        <span class="material-symbols-outlined text-xl">search</span>
+                    </span>
+                    <input class="bg-surface-container-highest border-none rounded-full py-1.5 pl-10 pr-4 text-sm w-64 focus:ring-1 focus:ring-primary/40 transition-all" placeholder="Search archive..." type="text"/>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">settings</span>
+                    </button>
+                    <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-primary to-tertiary p-[1px]">
+                        <div class="h-full w-full rounded-full bg-surface-container-low flex items-center justify-center overflow-hidden">
+                            <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6spIXEPsUzdaDEKibTZuyF4znlWZnTWTKRJ397dZYGjKQfD-ObwxwSa2QMbFIdPm03Z6flPaaE7KVUUNKSGVM4gNNMZVSfVk3cEqB0ryAoA7eR0ZX1hY7AyaruLdlZ1sdvdZNgVXLWCD3ddyyDqfKmcTYaF6TUleBD_V-qebOVlNek5eud1HfCiDLMK3ep7TtCxBfSuzlp2fj7ea5GG10r8JLpPut146nEBzXsPk7NdTUcOHnpyP2s4J3QoiF6ge26dlih-cnxTfu"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Canvas -->
+        <section class="flex-1 p-8 lg:p-12 max-w-5xl mx-auto w-full">
+            <div class="mb-10 text-center">
+                <h1 class="font-headline font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight mb-2">Edit Song</h1>
+                <p class="text-on-surface-variant text-lg">Modify track metadata and sonic descriptors</p>
+            </div>
+
+            <div class="glass-panel p-8 lg:p-12 rounded-[2rem] sonic-shadow border border-outline-variant/10">
+                <form method="POST" action="" class="space-y-8">
+
+                    <!-- Top Visual Section -->
+                    <div class="flex flex-col md:flex-row gap-8 items-center md:items-start mb-12">
+                        <div class="relative group">
+                            <div class="w-48 h-48 rounded-2xl overflow-hidden sonic-shadow">
+                                <img alt="Album Art" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVyhjXmpxJ73NQCORJGqIhjLBHOKZ_lbPuWMvfkQxlzrKQURgzfmf2nzQg_-OWAVra_VaX6uJG8dYFfLeBnRBxF3Vp5QYILIymQPEH6y8xLP65-NMZ0uNHKUOYEOvqC4wogXvXZWhCKLPdwXWWmOz1hZBaf7tJFaWiah0-NEw53rIqI3V6fOdlIHR6zTtW1ExzkmakJiHe5Qm_xGOKgP5zrRB6R7sxQ1EldTP2Mh-BzdfhdQAhUP5VL5GRIe8KRnF0gCje7n3oSt4P"/>
+                            </div>
+                            <button class="absolute bottom-3 right-3 bg-surface-bright/90 p-2 rounded-xl text-primary backdrop-blur-md border border-primary/20 hover:bg-primary hover:text-on-primary-fixed transition-all" type="button">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                        </div>
+                        <div class="flex-1 space-y-4 text-center md:text-left pt-4">
+                            <div>
+                                <h3 class="font-headline text-2xl font-bold text-on-surface">Midnight Resonance</h3>
+                                <p class="text-primary font-medium">Ethereal Static — Crystal Architect</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+
+                        <!-- Song Title -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Song Title</label>
+                            <input class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all" name="song_title" type="text" value="Midnight Resonance"/>
+                        </div>
+
+                        <!-- Artist -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Artist</label>
+                            <input class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all" name="artist" type="text" value="Ethereal Static"/>
+                        </div>
+
+                        <!-- Album -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Album</label>
+                            <input class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all" name="album" type="text" value="Crystal Architect"/>
+                        </div>
+
+                        <!-- Genre -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Genre</label>
+                            <select class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all appearance-none" name="genre">
+                                <option>Electronica</option>
+                                <option>Ambient</option>
+                                <option>Techno</option>
+                                <option>Industrial</option>
+                                <option>Experimental</option>
+                            </select>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="md:col-span-2 space-y-4 pt-4 pb-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Archive Rating (1-10 Scale)</label>
+                            <div class="flex flex-wrap gap-2">
+                                <?php
+                                $current_rating = 9;
+                                for ($i = 1; $i <= 10; $i++):
+                                    $active = $i === $current_rating;
+                                ?>
+                                <button class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm <?= $active ? 'bg-primary text-on-primary-fixed shadow-lg shadow-primary/20' : 'bg-surface-container-highest text-on-surface-variant hover:bg-primary/20 transition-all border border-outline-variant/10' ?>" type="button" onclick="selectRating(<?= $i ?>)"><?= $i ?></button>
+                                <?php endfor; ?>
+                            </div>
+                            <input name="archive_rating" type="hidden" id="rating-value" value="<?= $current_rating ?>"/>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-bold text-on-surface-variant uppercase tracking-widest ml-1">Archive Notes &amp; Reviews</label>
+                            <textarea class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all resize-none" name="notes" placeholder="Add curatorial notes..." rows="5">The synth layering in the second movement provides an exceptional depth that justifies its archival status. Exceptional mastering on the low-end frequencies. Recommended for late-night studio sessions.</textarea>
+                        </div>
+
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between pt-8 gap-4 border-t border-outline-variant/10 mt-12">
+                        <button class="order-2 sm:order-1 flex items-center gap-2 text-error hover:bg-error/10 px-6 py-3 rounded-xl transition-colors font-bold tracking-tight" type="button">
+                            <span class="material-symbols-outlined text-xl">delete_forever</span>
+                            Delete Song
+                        </button>
+                        <div class="order-1 sm:order-2 flex items-center gap-4 w-full sm:w-auto">
+                            <button class="flex-1 sm:flex-initial px-8 py-3 rounded-xl border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright transition-all font-bold" type="button">
+                                Cancel
+                            </button>
+                            <button class="flex-1 sm:flex-initial bg-gradient-to-br from-primary-dim to-primary text-on-primary-fixed px-10 py-3 rounded-xl font-bold sonic-shadow hover:opacity-90 active:scale-[0.98] transition-all" type="submit">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function selectRating(val) {
+            document.getElementById('rating-value').value = val;
+            const buttons = document.querySelectorAll('[onclick^="selectRating"]');
+            buttons.forEach((btn, i) => {
+                if (i + 1 === val) {
+                    btn.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-primary text-on-primary-fixed shadow-lg shadow-primary/20';
+                } else {
+                    btn.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-surface-container-highest text-on-surface-variant hover:bg-primary/20 transition-all border border-outline-variant/10';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

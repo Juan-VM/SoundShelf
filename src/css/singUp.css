@@ -1,0 +1,20 @@
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+}
+
+.sonic-gradient-btn {
+    background: linear-gradient(135deg, #8455ef 0%, #ba9eff 100%);
+}
+
+.auth-grid-bg {
+    background-color: #060e20;
+    background-image: radial-gradient(circle at 2px 2px, #192540 1px, transparent 0);
+    background-size: 48px 48px;
+}

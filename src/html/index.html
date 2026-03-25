@@ -5,11 +5,14 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>SounShelf</title>
+    <title>Sonic Archive | High-Fidelity Music Vault</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/index.css"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -78,29 +81,86 @@
             },
         }
     </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(25, 37, 64, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% -20%, #1f2b49 0%, #060e20 70%);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 30px rgba(186, 158, 255, 0.3);
+        }
+
+        .mask-fade-left {
+            mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+    </style>
 </head>
 
 <body class="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary">
-    <main class="relative min-h-screen  overflow-hidden hero-gradient">
+    <!-- Top Navigation Bar (Simplified) -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-[#060e20]/80 backdrop-blur-xl bg-gradient-to-b from-[#091328] to-transparent shadow-[0_20px_40px_rgba(0,0,0,0.12)]">
+        <div class="flex justify-between items-center px-12 h-20 w-full max-w-[1440px] mx-auto">
+            <div class="text-2xl font-extrabold tracking-tighter text-[#dee5ff] font-headline">
+                Sonic Archive
+            </div>
+            <div class="flex items-center gap-6">
+                <button
+                    class="text-[#ba9eff] font-headline font-bold tracking-tight hover:bg-[#1f2b49]/50 px-4 py-2 rounded-md transition-all active:scale-95 duration-200">Log
+                    In</button>
+                <button
+                    class="bg-primary text-on-primary-fixed font-headline font-bold tracking-tight px-6 py-2.5 rounded-md hover:shadow-[0_0_20px_rgba(186,158,255,0.4)] transition-all active:scale-95 duration-200">Create
+                    Account</button>
+            </div>
+        </div>
+    </nav>
+    <main class="relative min-h-screen pt-20 overflow-hidden hero-gradient">
+        <!-- Ambient Background Aesthetic -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-20">
+            <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-tertiary/10 blur-[100px] rounded-full">
+            </div>
+            <div
+                class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5">
+            </div>
+        </div>
         <!-- Hero Section -->
         <section
             class="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 max-w-5xl mx-auto">
+            <div
+                class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-outline-variant/20">
+                <span class="material-symbols-outlined text-primary text-sm">verified</span>
+                <span class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">The High-Fidelity
+                    Standard</span>
+            </div>
             <h1
                 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface mb-8 leading-[1.1] text-glow">
-                SoundShelf
+                Sonic Archive: Your personal high-fidelity vault for music information.
             </h1>
             <p class="text-on-surface-variant text-lg md:text-xl max-w-2xl mb-12 font-medium leading-relaxed">
-                Tu biblioteca musical, organizada a tu manera.
+                Catalog every nuance, rate your collection with professional precision, and manage your digital vinyl
+                vault without the noise of a player.
             </p>
             <div class="flex flex-col sm:flex-row gap-6 items-center">
-                <a href="php/singUp.php"
-                    class="w-full sm:w-auto px-10 py-4 bg-gradient-to-br from-primary-dim to-primary text-on-primary-fixed font-headline font-bold text-lg rounded-xl text-center hover:shadow-[0_10px_40px_rgba(186,158,255,0.3)] transition-all active:scale-95 duration-200">
-                    Crear Cuenta
-                </a>
-                <a href="php/login.php"
-                    class="w-full sm:w-auto px-10 py-4 glass-panel border border-outline-variant/30 text-primary font-headline font-bold text-lg rounded-xl text-center hover:border-primary/50 transition-all active:scale-95 duration-200">
-                    Iniciar Sesion
-                </a>
+                <button
+                    class="w-full sm:w-auto px-10 py-4 bg-gradient-to-br from-primary-dim to-primary text-on-primary-fixed font-headline font-bold text-lg rounded-xl hover:shadow-[0_10px_40px_rgba(186,158,255,0.3)] transition-all active:scale-95 duration-200">
+                    Create Account
+                </button>
+                <button
+                    class="w-full sm:w-auto px-10 py-4 glass-panel border border-outline-variant/30 text-primary font-headline font-bold text-lg rounded-xl hover:border-primary/50 transition-all active:scale-95 duration-200">
+                    Log In
+                </button>
             </div>
         </section>
         <!-- Feature Bento Grid (Restored from SCREEN_37) -->
@@ -110,11 +170,10 @@
                 <div
                     class="md:col-span-8 glass-panel p-10 rounded-xl border border-outline-variant/10 overflow-hidden relative group">
                     <div class="relative z-10 max-w-md">
-                        <h3 class="font-headline text-3xl font-bold mb-4">Tu Espacio Musical</h3>
-                        <p class="text-on-surface-variant leading-relaxed">
-                            <b>Toma el control total de tu colección.</b> Más que una simple lista, este sistema es el complemento perfecto
-                            para tu pasión musical. Registra, organiza y preserva tus preferencias en un entorno privado y seguro.
-                        </p>
+                        <h3 class="font-headline text-3xl font-bold mb-4">Metadata Mastery</h3>
+                        <p class="text-on-surface-variant leading-relaxed">Deep-dive into technical specifications,
+                            label history, and master-tape details. Your collection deserves more than just a song
+                            title.</p>
                     </div>
                     <img class="absolute right-0 top-0 h-full w-1/2 object-cover opacity-40 group-hover:scale-105 transition-transform duration-700 pointer-events-none mask-fade-left"
                         data-alt="Close-up of a high-end vintage audio mixing console with glowing meters and warm studio lighting"
@@ -127,30 +186,30 @@
                         <span class="material-symbols-outlined text-primary">analytics</span>
                     </div>
                     <div>
-                        <h4 class="font-headline text-xl font-bold mb-2 text-on-surface">Tu Biblioteca en Cifras</h4>
-                        <p class="text-on-surface-variant text-sm leading-relaxed">Visualiza el alcance de tu colección.
-                             Mantén un control ordenado de todo tu contenido musical.</p>
+                        <h4 class="font-headline text-xl font-bold mb-2 text-on-surface">Curation Analytics</h4>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Visualize your listening habits and
+                            collection distribution through an editorial lens.</p>
                     </div>
                 </div>
                 <!-- Small Feature Card 2: Vault Organization -->
                 <div
                     class="md:col-span-4 bg-surface-container-low p-10 rounded-xl border border-outline-variant/10 flex flex-col justify-between">
                     <div class="w-12 h-12 bg-tertiary/10 rounded-lg flex items-center justify-center mb-6">
-                        <span class="material-symbols-outlined text-tertiary">search</span>
+                        <span class="material-symbols-outlined text-tertiary">inventory_2</span>
                     </div>
                     <div>
-                        <h4 class="font-headline text-xl font-bold mb-2 text-on-surface">Encuentra lo que Buscas</h4>
-                        <p class="text-on-surface-variant text-sm leading-relaxed">Localización rápida y efectiva. No pierdas tiempo navegando;
-                             utiliza nuestro sistema de búsqueda para filtrar resultados por nombre, artista o álbum.</p>
+                        <h4 class="font-headline text-xl font-bold mb-2 text-on-surface">Vault Organization</h4>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Automated archival tools that keep
+                            your library's metadata verified and high-fidelity.</p>
                     </div>
                 </div>
                 <!-- Wide Feature Card: Precision Rating -->
                 <div
                     class="md:col-span-8 glass-panel p-10 rounded-xl border border-outline-variant/10 flex flex-col md:flex-row items-center gap-10">
                     <div class="flex-1">
-                        <h3 class="font-headline text-3xl font-bold mb-4">Valora tu Experiencia</h3>
-                        <p class="text-on-surface-variant leading-relaxed">Dale voz a tus gustos personales. Personaliza tu biblioteca asignando una puntuación
-                             y comentario para cada tema. </p>
+                        <h3 class="font-headline text-3xl font-bold mb-4">Precision Rating</h3>
+                        <p class="text-on-surface-variant leading-relaxed">Rate albums based on production quality,
+                            arrangement, and soundstage rather than just "liking" a track.</p>
                     </div>
                     <div class="grid grid-cols-3 gap-4 w-full md:w-auto">
                         <div
@@ -174,11 +233,14 @@
     <footer class="bg-[#000000] w-full py-12 px-12 border-t border-[#40485d]/20 font-['Inter'] text-sm tracking-wide">
         <div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl mx-auto">
             <div class="flex flex-col gap-2">
-                <span class="text-lg font-bold text-[#dee5ff] font-headline">SoundShelf</span>
-                <span class="text-[#a3aac4]">© 2026 SoundShlef. Biblioteca musical.</span>
+                <span class="text-lg font-bold text-[#dee5ff] font-headline">Sonic Archive</span>
+                <span class="text-[#a3aac4]">© 2024 The Sonic Archive. Precision Audio Curation.</span>
             </div>
             <div class="flex flex-wrap justify-center gap-8">
-                <a class="text-[#a3aac4] hover:text-[#ff97b5] transition-colors" href="https://github.com/Juan-VM" target="_blank">GitHub</a>
+                <a class="text-[#a3aac4] hover:text-[#ff97b5] transition-colors" href="#">Privacy Policy</a>
+                <a class="text-[#a3aac4] hover:text-[#ff97b5] transition-colors" href="#">Terms of Service</a>
+                <a class="text-[#a3aac4] hover:text-[#ff97b5] transition-colors" href="#">API Documentation</a>
+                <a class="text-[#a3aac4] hover:text-[#ff97b5] transition-colors" href="#">Contact Support</a>
             </div>
         </div>
     </footer>

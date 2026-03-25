@@ -1,1 +1,0 @@
-Aqui van a ir los archivos de php del sistema (Las paginas de funcionalidades: login, registro, etc).
