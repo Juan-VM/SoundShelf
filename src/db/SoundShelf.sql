@@ -1,13 +1,3 @@
--- Nivel 3 (dependen de otras)
-DROP TABLE CancionXUsuario CASCADE CONSTRAINTS;
-DROP TABLE CancionXLista CASCADE CONSTRAINTS;
-
--- Nivel 2
-DROP TABLE Lista CASCADE CONSTRAINTS;
-DROP TABLE Cancion CASCADE CONSTRAINTS;
-
--- Nivel 1 (padre)
-DROP TABLE Usuario CASCADE CONSTRAINTS;
 
 /*-------------------------------------- DDL ------------------------------------------*/
 /* ------ CREACION DE TABLAS CON PK Y FK POR ORDEN DE JERARQUIA DE DEPENDENCIAS ------ */
@@ -66,8 +56,41 @@ CREATE TABLE CancionXUsuario(
 );
 
 
+/* ----------- LOGICA CRUD ----------- */
 
-/* ----------- LOGICA DE FUNCIONALIDADES ----------- */
+/* 
+    Este procedimiento es para actualizar los datos en la tabla usuario
+    por ahora se usan en:
+        - Funcionalidad del perfil para actualizar datos.
+*/
+CREATE OR REPLACE PROCEDURE SP_UPDATE_USUARIO(
+    p_idUsuario IN Usuario.idUsuario%TYPE,
+    p_nombre IN Usuario.nombreUsuario%TYPE,
+    p_correo IN Usuario.correo%TYPE
+)
+IS
+BEGIN
+    UPDATE Usuario
+    SET nombreUsuario = p_nombre,
+        correo = p_correo
+    WHERE idUsuario = p_idUsuario;
+
+    COMMIT;
+END;
+
+
+
+/* ----------- LOGICA DE FUNCIONALIDADES DEL SISTEMA ----------- */
+/*
+    Quiero aclarar que se usa mucho porocedimiento con OUT poruq en php se 
+    puede enlazar una variable con un parametro de una consulta para que en 
+    el momento que se ejecuta la consulta esa variable guarde el valor al
+    que esta enlazado automaticamente, los cursores solo se van a usar en 
+    funciones que tengan que devolver varios registros, en el caso de datos
+    simples se va a usar OUT en procedimientos.
+*/
+
+/* ----------- LOGICA DE VALIDACION Y AUTENTICACION ----------- */
 
 /* ----------- REGISTAR USUARIO (PROCEDIMIENTO 1) ----------- */
 /*
@@ -110,7 +133,6 @@ EXCEPTION
     WHEN OTHERS THEN
         p_resultado := 2;
 END;
-
 
 
 /* ----------- LOGIN USUARIO (PROCEDIMIENTO 2) ----------- */
@@ -232,6 +254,46 @@ BEGIN
 
     RETURN v_cursor;
 END;
+
+
+/* ----------- LOGICA DE LA PANTALLA PERFIL ----------- */
+
+/* ----------- OBTENER DATOS DEL USUARIO (PROCEDIMIENTO 4 + SUBCONSULTAS)----------- */
+/*
+    Este procedimiento toma el id del usuario que esta en la session y lo usa para obtener sus
+    datos. Estos datos en el codigo se asignan a variables y luego se usan para rellenar los
+    campos del formulario del perfil y del card de la info. Esto para que el usuario sepa cual
+    es su informacion personal a la hora de cambiarla para actualizarla.
+*/
+CREATE OR REPLACE PROCEDURE SP_GET_USUARIO(
+    p_idUsuario IN Usuario.idUsuario%TYPE,
+    p_nombre OUT Usuario.nombreUsuario%TYPE,
+    p_correo OUT Usuario.correo%TYPE,
+    p_totalCanciones OUT NUMBER,
+    p_totalListas OUT NUMBER
+)
+IS
+BEGIN
+    SELECT 
+        u.nombreUsuario,
+        u.correo,
+        -- Subconsulta canciones
+        (SELECT COUNT(*)
+         FROM CancionXUsuario cu
+         WHERE cu.idUsuario = u.idUsuario),
+        -- Subconsulta listas
+        (SELECT COUNT(*)
+         FROM Lista l
+         WHERE l.idUsuario = u.idUsuario)
+    INTO 
+        p_nombre,
+        p_correo,
+        p_totalCanciones,
+        p_totalListas
+    FROM Usuario u
+    WHERE u.idUsuario = p_idUsuario;
+END;
+
 
 /*
     El proyecto tiene 8 epicas con varias funcionalidades c/u, estas son las funcionalidades que se podian crear

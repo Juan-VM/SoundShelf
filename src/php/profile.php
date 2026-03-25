@@ -1,4 +1,52 @@
-<?php ?>
+<?php
+    session_start();
+
+    if (!isset($_SESSION["idUsuario"])) {
+        header("Location: ../index.php");
+        exit();
+    }
+
+    require_once("../db/OracleDB.php");
+
+    $db = new OracleDB();
+    $conn = $db->getConn();
+
+    $idUsuario = $_SESSION["idUsuario"];
+    $nombre = "";
+    $correo = "";
+    $totalCanciones = 0;
+    $totalListas = 0;
+
+
+    // Obtener datos para mostrarlos
+    $sqlGetUsuario = "BEGIN SP_GET_USUARIO(:id, :nombre, :correo, :canciones, :listas); END;";
+    $stmtGetUsuario = oci_parse($conn, $sqlGetUsuario);
+
+    oci_bind_by_name($stmtGetUsuario, ":id", $idUsuario);
+    oci_bind_by_name($stmtGetUsuario, ":nombre", $nombre, 100);
+    oci_bind_by_name($stmtGetUsuario, ":correo", $correo, 100);
+    oci_bind_by_name($stmtGetUsuario, ":canciones", $totalCanciones);
+    oci_bind_by_name($stmtGetUsuario, ":listas", $totalListas);
+
+    oci_execute($stmtGetUsuario);
+
+    // Actualiza los datos recibidos en el form
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $nuevoNombre = $_POST["display_name"];
+        $nuevoCorreo = $_POST["email"];
+
+        $sqlUpdateUsuario = "BEGIN SP_UPDATE_USUARIO(:id, :nombre, :correo); END;";
+        $stmtUpdateUsuario = oci_parse($conn, $sqlUpdateUsuario);
+
+        oci_bind_by_name($stmtUpdateUsuario, ":id", $idUsuario);
+        oci_bind_by_name($stmtUpdateUsuario, ":nombre", $nuevoNombre);
+        oci_bind_by_name($stmtUpdateUsuario, ":correo", $nuevoCorreo);
+
+        oci_execute($stmtUpdateUsuario);
+    }
+    
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
@@ -86,7 +134,6 @@
         include '../includes/sideBar.php';
     ?>
 
-
     <!-- TopNavBar -->
     <?php include '../includes/topBar.php'; ?>
 
@@ -104,7 +151,7 @@
                     <a href="dashboard.php" class="px-6 py-2.5 rounded-lg border border-outline-variant/40 text-primary font-semibold hover:bg-surface-bright transition-colors text-sm font-label uppercase tracking-widest">
                         Cancelar
                     </a>
-                    <button class="px-6 py-2.5 rounded-lg primary-gradient text-on-primary-fixed font-bold sonic-shadow hover:scale-[1.02] transition-transform text-sm font-label uppercase tracking-widest">
+                    <button type="submit" form="profileForm" class="px-6 py-2.5 rounded-lg primary-gradient text-on-primary-fixed font-bold sonic-shadow hover:scale-[1.02] transition-transform text-sm font-label uppercase tracking-widest">
                         Guardar Cambios
                     </button>
                 </div>
@@ -125,16 +172,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 class="mt-6 text-2xl font-bold font-headline">Nombre Usuario</h3>
-                            <p class="text-on-surface-variant font-label uppercase text-xs tracking-[0.2em]">correo@ejemplo.com</p>
+                            <h3 class="mt-6 text-2xl font-bold font-headline"><?php echo $nombre; ?></h3>
+                            <p class="text-on-surface-variant font-label uppercase text-xs tracking-[0.2em]"><?php echo $correo; ?></p>
                         </div>
                         <div class="mt-10 grid grid-cols-2 gap-2 text-center">
                             <div>
-                                <p class="text-xl font-bold font-headline">1.2</p>
+                                <p class="text-xl font-bold font-headline"><?php echo $totalCanciones; ?></p>
                                 <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Canciones</p>
                             </div>
                             <div class="border-l border-outline-variant/10">
-                                <p class="text-xl font-bold font-headline">48</p>
+                                <p class="text-xl font-bold font-headline"><?php echo $totalListas; ?></p>
                                 <p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">Listas</p>
                             </div>
                         </div>
@@ -147,19 +194,19 @@
                         <div class="flex justify-between items-center mb-10">
                             <h3 class="text-xl font-bold font-headline">Informacion Personal</h3>
                         </div>
-                        <form method="POST" action="" class="space-y-8">
+                        <form id="profileForm" method="POST" action="" class="space-y-8">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Nombre Usuario</label>
                                     <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none"
-                                     type="text" name="display_name" value="Nombre"/>
+                                     type="text" name="display_name" value="<?php echo $nombre; ?>"/>
                                 </div>
                                 
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[10px] font-label uppercase tracking-[0.2em] text-on-surface-variant ml-1">Correo</label>
                                 <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 px-5 focus:ring-1 focus:ring-primary/40 text-on-surface font-medium transition-all outline-none"
-                                 type="email" name="email" value="correo@usuario.com"/>
+                                 type="email" name="email" value="<?php echo $correo; ?>"/>
                             </div>
     
                         </form>
