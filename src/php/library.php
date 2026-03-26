@@ -1,4 +1,19 @@
-<?php ?>
+<?php 
+    session_start();
+
+    if (!isset($_SESSION["idUsuario"])) {
+        header("Location: ../index.php");
+        exit();
+    }
+    
+    require_once("../db/OracleDB.php");
+
+    $db = new OracleDB();
+    $conn = $db->getConn();
+
+    $idUsuario = $_SESSION["idUsuario"];
+
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>

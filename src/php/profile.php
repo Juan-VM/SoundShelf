@@ -33,6 +33,7 @@
     // Actualiza los datos recibidos en el form
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+        $_SESSION["nombreUsuario"] = $_POST["display_name"];
         $nuevoNombre = $_POST["display_name"];
         $nuevoCorreo = $_POST["email"];
 
@@ -44,8 +45,9 @@
         oci_bind_by_name($stmtUpdateUsuario, ":correo", $nuevoCorreo);
 
         oci_execute($stmtUpdateUsuario);
+
+        header("Location: profile.php");
     }
-    
 ?>
 <!DOCTYPE html>
 <html class="dark" lang="en">

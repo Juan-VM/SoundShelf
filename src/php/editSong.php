@@ -91,8 +91,8 @@
         <!-- Main Content Canvas -->
         <section class="flex-1 p-8 lg:p-12 max-w-5xl mx-auto w-full">
             <div class="mb-10 text-center">
-                <h1 class="font-headline font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight mb-2">Edit Song</h1>
-                <p class="text-on-surface-variant text-lg">Modify track metadata and sonic descriptors</p>
+                <h1 class="font-headline font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight mb-2">Editar</h1>
+                <p class="text-on-surface-variant text-lg">Modifica los dotos de tu musica</p>
             </div>
 
             <div class="glass-panel p-8 lg:p-12 rounded-[2rem] sonic-shadow border border-outline-variant/10">

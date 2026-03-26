@@ -1,10 +1,10 @@
 <header class="fixed top-0 right-0 left-64 h-20 z-40 bg-[#060e20]/80 backdrop-blur-xl flex justify-end items-center px-10">
     <div class="flex items-center gap-6">
-        <!-- Mostrar nombre usuario
+        
         <span class="text-sm text-on-surface font-label uppercase tracking-widest text-on-surface-variant">
-            <?php // echo $_SESSION["nombreUsuario"]; ?>
+            <?php  echo $_SESSION["nombreUsuario"]; ?>
         </span>
-        -->
+        
         <div class="h-8 w-[1px] bg-outline-variant/20 mx-2"></div>
         <a href="logout.php" 
             class="text-sm font-label uppercase tracking-widest text-on-surface-variant hover:text-error transition-all">
