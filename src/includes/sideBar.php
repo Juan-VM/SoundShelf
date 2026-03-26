@@ -19,7 +19,7 @@ $inactive = "flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:te
         <?php foreach ($nav_items as $item): ?>
             <a href="<?= $item['href'] ?>" class="<?= ($active_page ?? '') === $item['key'] ? $active : $inactive ?>">
                 <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
-                <span class="font-label uppercase text-xs tracking-wider"><?= $item['label'] ?></span>
+                <span class="font-label uppercase text-xs tracking-wider" style="font-size: 15px;"><?= $item['label'] ?></span>
             </a>
         <?php endforeach; ?>
     </nav>

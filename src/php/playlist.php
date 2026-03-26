@@ -111,7 +111,7 @@
                     <div class="flex gap-4">
                         <a href="" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
                             <span class="material-symbols-outlined text-lg">edit</span>
-                            Editar Lista
+                            Editar Info Lista
                         </a>
                         <a href="" class="flex items-center gap-2 text-on-surface-variant hover:text-error transition-colors text-sm font-label uppercase tracking-widest font-semibold px-4 py-2 bg-surface-container rounded-lg border border-outline-variant/10">
                             <span class="material-symbols-outlined text-lg">delete</span>

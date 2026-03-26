@@ -1,4 +1,11 @@
-<?php ?>
+<?php 
+    session_start();
+
+    if (!isset($_SESSION["idUsuario"])) {
+        header("Location: ../index.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
@@ -96,6 +103,11 @@
             </div>
         </div>
         <div class="flex items-center gap-6">
+
+            <span class="text-sm text-on-surface font-label uppercase tracking-widest text-on-surface-variant">
+                <?php  echo $_SESSION["nombreUsuario"]; ?>
+            </span>
+        
             <div class="h-8 w-[1px] bg-outline-variant/20 mx-2"></div>
             <button class="text-sm font-label uppercase tracking-widest text-on-surface-variant hover:text-error transition-all">Salir</button>
             <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">

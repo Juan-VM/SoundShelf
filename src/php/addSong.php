@@ -1,4 +1,50 @@
-<?php ?>
+<?php 
+    session_start();
+
+    if (!isset($_SESSION["idUsuario"])) {
+        header("Location: ../index.php");
+        exit();
+    }
+
+    require_once("../db/OracleDB.php");
+
+    $db = new OracleDB();
+    $conn = $db->getConn();
+
+    $idUsuario = $_SESSION["idUsuario"];
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $titulo = $_POST["track_title"];
+        $artista = $_POST["lead_artist"];
+        $album = $_POST["album_title"];
+        $genero = $_POST["genre"];
+        $calificacion = $_POST["rating"];
+        $comentario = $_POST["notes"];
+
+        $sqlInsertCancion = "BEGIN SP_INSERT_CANCION(:idUsuario, :titulo, :genero, :calificacion, :comentario, :artista, :album); END;";
+        $stmtInsertCancion = oci_parse($conn, $sqlInsertCancion);
+
+        oci_bind_by_name($stmtInsertCancion, ":idUsuario", $idUsuario);
+        oci_bind_by_name($stmtInsertCancion, ":titulo", $titulo);
+        oci_bind_by_name($stmtInsertCancion, ":genero", $genero);
+        oci_bind_by_name($stmtInsertCancion, ":calificacion", $calificacion);
+        oci_bind_by_name($stmtInsertCancion, ":comentario", $comentario);
+        oci_bind_by_name($stmtInsertCancion, ":artista", $artista);
+        oci_bind_by_name($stmtInsertCancion, ":album", $album);
+
+        if (oci_execute($stmtInsertCancion)) {
+            $_SESSION["mensaje"] = "Canción agregada correctamente";
+        } else {
+            $_SESSION["mensaje"] = "Error al agregar la canción";
+        }
+
+        // Evita reenvío del formulario
+        header("Location: addSong.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
@@ -91,22 +137,22 @@
             <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#ba9eff] dark:text-violet-400 font-bold border-r-4 border-[#ba9eff] dark:border-violet-500 bg-[#1f2b49]/30 dark:bg-slate-900/50 transition-colors duration-200 group"
              href="dashboard.php">
                 <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-label uppercase text-xs tracking-wider">Dashboard</span>
+                <span class="font-label uppercase text-xs tracking-wider" style="font-size: 15px;">Dashboard</span>
             </a>
             <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
              href="library.php">
                 <span class="material-symbols-outlined">library_music</span>
-                <span class="font-label uppercase text-xs tracking-wider">Libreria</span>
+                <span class="font-label uppercase text-xs tracking-wider" style="font-size: 15px;">Libreria</span>
             </a>
             <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
              href="search.php">
                 <span class="material-symbols-outlined">search</span>
-                <span class="font-label uppercase text-xs tracking-wider">Busqueda</span>
+                <span class="font-label uppercase text-xs tracking-wider" style="font-size: 15px;">Busqueda</span>
             </a>
             <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-[#a3aac4] dark:text-slate-400 hover:text-[#dee5ff] dark:hover:text-slate-200 hover:bg-[#1f2b49] dark:hover:bg-slate-900 transition-colors duration-200 group"
              href="profile.php">
                 <span class="material-symbols-outlined">person</span>
-                <span class="font-label uppercase text-xs tracking-wider">Perfil</span>
+                <span class="font-label uppercase text-xs tracking-wider" style="font-size: 15px;">Perfil</span>
             </a>
         </nav>
     </aside>
@@ -134,7 +180,15 @@
             <!-- Registration Form Layout -->
             <div class="max-w-3xl mx-auto lg:mx-0">
                 <form method="POST" action="" class="space-y-8">
-
+                    <!-- Action mensage -->
+                    <?php if (isset($_SESSION["mensaje"])): ?>
+                        <div class="mb-6 p-4 rounded-xl bg-green-500/20 text-green-300 font-semibold text-center">
+                            <?php 
+                                echo $_SESSION["mensaje"]; 
+                                unset($_SESSION["mensaje"]);
+                            ?>
+                        </div>
+                    <?php endif; ?>
                     <!-- Track Details Section -->
                     <div class="space-y-6">
 
@@ -142,34 +196,34 @@
                             <div class="space-y-2">
                                 <label class="text-xs font-semibold text-on-surface-variant px-1" style="font-size: 15px;">Titulo Cancion</label>
                                 <input class="w-full bg-surface-container-highest border-0 border-b border-transparent rounded-xl px-5 py-4 text-on-surface placeholder:text-outline-variant transition-all focus:ring-0"
-                                 name="track_title" placeholder="Nombre de cancion" type="text"/>
+                                 name="track_title" placeholder="Nombre de cancion" type="text" required/>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-xs font-semibold text-on-surface-variant px-1" style="font-size: 15px;">Artista</label>
                                 <input class="w-full bg-surface-container-highest border-0 border-b border-transparent rounded-xl px-5 py-4 text-on-surface placeholder:text-outline-variant transition-all focus:ring-0"
-                                 name="lead_artist" placeholder="Artista" type="text"/>
+                                 name="lead_artist" placeholder="Artista" type="text" required/>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-xs font-semibold text-on-surface-variant px-1" style="font-size: 15px;">Album</label>
                                 <input class="w-full bg-surface-container-highest border-0 border-b border-transparent rounded-xl px-5 py-4 text-on-surface placeholder:text-outline-variant transition-all focus:ring-0"
-                                 name="album_title" placeholder="Album" type="text"/>
+                                 name="album_title" placeholder="Album" type="text" required/>
                             </div>
                             <div class="space-y-2 relative">
                                 <label class="text-xs font-semibold text-on-surface-variant px-1" style="font-size: 15px;">Genero</label>
                                 <select class="w-full appearance-none bg-surface-container-highest border-0 border-b border-transparent rounded-xl px-5 py-4 text-on-surface transition-all focus:ring-0"
-                                 name="genre">
-                                    <option>Seleccionar</option>
-                                    <option>Electronica</option>
-                                    <option>Jazz Fusion</option>
-                                    <option>Clasica</option>
-                                    <option>Ambiente</option>
-                                    <option>Experimental</option>
-                                    <option>Rock</option>
-                                    <option>Regueton</option>
-                                    <option>Trap</option>
-                                    <option>Instrumental</option>
+                                 name="genre" required>
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option value="Electronica">Electronica</option>
+                                    <option value="Jazz Fusion">Jazz Fusion</option>
+                                    <option value="Clasica">Clasica</option>
+                                    <option value="Ambiente">Ambiente</option>
+                                    <option value="Experimental">Experimental</option>
+                                    <option value="Rock">Rock</option>
+                                    <option value="Regueton">Regueton</option>
+                                    <option value="Trap">Trap</option>
+                                    <option value="Instrumental">Instrumental</option>
                                 </select>
                             </div>
                         </div>
@@ -187,11 +241,11 @@
                             </label>
                             <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
                                 <?php for ($i = 1; $i <= 10; $i++): ?>
-                                <button class="py-3 rounded-lg <?= $i === 8 ? 'bg-primary text-on-primary-fixed' : 'bg-surface-container-highest text-on-surface hover:bg-primary hover:text-on-primary-fixed' ?> font-bold transition-all"
+                                <button class="py-3 rounded-lg <?= $i === 1 ? 'bg-primary text-on-primary-fixed' : 'bg-surface-container-highest text-on-surface hover:bg-primary hover:text-on-primary-fixed' ?> font-bold transition-all"
                                  type="button" onclick="selectRating(<?= $i ?>)"><?= $i ?></button>
                                 <?php endfor; ?>
                             </div>
-                            <input type="hidden" name="rating" id="rating-value" value="8"/>
+                            <input type="hidden" name="rating" id="rating-value" value="1"/>
                             <div class="flex justify-between mt-2 px-1">
                                 <span class="text-[10px] uppercase tracking-tighter text-outline-variant" style="color: white;">Standar</span>
                                 <span class="text-[10px] uppercase tracking-tighter text-outline-variant" style="color: white;">Obra de arte</span>
@@ -203,7 +257,7 @@
                     <div class="space-y-4">
                         <label class="text-xs font-semibold text-on-surface-variant px-1" style="font-size: 15px;">Comentario</label>
                         <textarea class="w-full bg-surface-container-highest border-0 border-b border-transparent rounded-xl px-5 py-4 text-on-surface placeholder:text-outline-variant transition-all focus:ring-0 resize-none" 
-                        name="notes" placeholder="Ingresa el comentario para tu cancion..." rows="4"></textarea>
+                        name="notes" placeholder="Ingresa el comentario para tu cancion..." rows="4" required></textarea>
                     </div>
 
                     <!-- Submit -->
@@ -212,6 +266,9 @@
                             <span class="material-symbols-outlined">app_registration</span>
                             Registrar Cancion
                         </button>
+                        <a href="dashboard.php" class="w-full py-4 text-on-surface-variant font-bold text-sm hover:text-on-surface transition-colors uppercase tracking-widest text-center block">
+                            Cancelar
+                        </a>
                     </div>
 
                 </form>

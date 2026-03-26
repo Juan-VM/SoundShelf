@@ -47,6 +47,7 @@
         oci_execute($stmtUpdateUsuario);
 
         header("Location: profile.php");
+        exit();
     }
 ?>
 <!DOCTYPE html>

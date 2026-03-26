@@ -189,13 +189,14 @@
                                     <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Album</th>
                                     <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Genero</th>
                                     <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Rating</th>
-                                    <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant text-right">Gestion</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-outline-variant/5">
                                 <!-- Row 1 -->
                                 <?php while ($row = oci_fetch_assoc($cursor)): ?>
-                                    <tr class="group hover:bg-surface-bright transition-colors">
+                                    <tr onclick="window.location='song.php?idCancion=<?php echo $row['IDCANCION']; ?>'"
+                                        class="group hover:bg-surface-bright transition-colors cursor-pointer">
 
                                         <td class="px-8 py-6">
                                             <div class="flex items-center gap-4">
@@ -230,15 +231,6 @@
                                                 </span>
                                             </div>
                                         </td>
-
-                                        <td class="px-8 py-6 text-right">
-                                            <div class="flex justify-end gap-3">
-                                                <a href="editSong.php" class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg">
-                                                    <span class="material-symbols-outlined">edit</span>
-                                                </a>
-                                            </div>
-                                        </td>
-
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
