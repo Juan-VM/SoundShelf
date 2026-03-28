@@ -30,7 +30,7 @@
     oci_bind_by_name($stmtGetSong, ":artista", $artista, 100);
     oci_bind_by_name($stmtGetSong, ":album", $album, 100);
     oci_bind_by_name($stmtGetSong, ":genero", $genero, 50);
-    oci_bind_by_name($stmtGetSong, ":calificacion", $calificacion);
+    oci_bind_by_name($stmtGetSong, ":calificacion", $calificacion, -1, SQLT_INT);
     oci_bind_by_name($stmtGetSong, ":comentario", $comentario, 300);
 
     oci_execute($stmtGetSong);
@@ -77,7 +77,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="../css/editSong.css"/>
+    <link rel="stylesheet" href="../css/song.css"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
