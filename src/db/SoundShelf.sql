@@ -385,3 +385,190 @@ BEGIN
 
     COMMIT;
 END;
+---Logica Cambios CA
+/* ----------- OBTENER DATOS DE UNA LISTA (PROCEDIMIENTO) Playlist----------- */
+/*
+    Recibe el idLista y devuelve el titulo, fecha y total de canciones.
+    Se usa en playlist.php para mostrar el header de la lista.
+*/
+CREATE OR REPLACE PROCEDURE SP_GET_LISTA(
+    p_idLista IN Lista.idLista%TYPE,
+    p_titulo OUT Lista.titulo%TYPE,
+    p_fechaCreacion OUT Lista.fechaCreacion%TYPE,
+    p_totalCanciones OUT NUMBER
+)
+IS
+BEGIN
+    SELECT 
+        l.titulo,
+        l.fechaCreacion,
+        (SELECT COUNT(*) FROM CancionXLista cl WHERE cl.idLista = l.idLista)
+    INTO p_titulo, p_fechaCreacion, p_totalCanciones
+    FROM Lista l
+    WHERE l.idLista = p_idLista;
+END;
+
+
+/* ----------- OBTENER CANCIONES DE UNA LISTA (FUNCION) ----------- */
+/*
+    Retorna un cursor con todas las canciones de una lista especifica.
+    Se recorre en PHP para generar dinamicamente las filas de la tabla.
+*/
+CREATE OR REPLACE FUNCTION fn_obtener_canciones_lista(
+    p_idLista IN Lista.idLista%TYPE
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT 
+            c.idCancion,
+            c.titulo,
+            c.artista,
+            c.album,
+            c.genero,
+            c.calificacion
+        FROM Cancion c
+        JOIN CancionXLista cl ON c.idCancion = cl.idCancion
+        WHERE cl.idLista = p_idLista;
+
+    RETURN v_cursor;
+END;
+
+
+/* ----------- ELIMINAR LISTA (PROCEDIMIENTO) ----------- */
+/*
+    Elimina primero las relaciones en CancionXLista y luego la lista.
+    Simbologia p_resultado:
+        0 = eliminacion exitosa
+        2 = error general
+*/
+CREATE OR REPLACE PROCEDURE SP_DELETE_LISTA(
+    p_idLista IN Lista.idLista%TYPE,
+    p_resultado OUT NUMBER
+)
+IS
+BEGIN
+    DELETE FROM CancionXLista
+    WHERE idLista = p_idLista;
+
+    DELETE FROM Lista
+    WHERE idLista = p_idLista;
+
+    COMMIT;
+    p_resultado := 0;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        p_resultado := 2;
+END;
+/* ----------- INSERTAR LISTA (PROCEDIMIENTO) -----------Addplailist */
+/*
+    Recibe el titulo y el idUsuario, inserta la lista con la fecha
+    actual y devuelve el resultado.
+
+    Simbologia p_resultado:
+        0 = creacion exitosa
+        2 = error general
+*/
+CREATE OR REPLACE PROCEDURE SP_INSERT_LISTA(
+    p_idUsuario IN Lista.idUsuario%TYPE,
+    p_titulo IN Lista.titulo%TYPE,
+    p_resultado OUT NUMBER
+)
+IS
+BEGIN
+    INSERT INTO Lista (fechaCreacion, titulo, idUsuario)
+    VALUES (SYSDATE, p_titulo, p_idUsuario);
+
+    COMMIT;
+    p_resultado := 0;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        p_resultado := 2;
+END;
+/* ----------- OBTENER LISTAS DEL USUARIO (FUNCION) Library----------- */
+/*
+    Retorna un cursor con todas las listas del usuario y el total
+    de canciones de cada una. Se recorre en PHP para generar
+    dinamicamente las cards de la libreria.
+*/
+CREATE OR REPLACE FUNCTION fn_obtener_listas_usuario(
+    p_idUsuario IN Usuario.idUsuario%TYPE
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT 
+            l.idLista,
+            l.titulo,
+            l.fechaCreacion,
+            (SELECT COUNT(*) 
+             FROM CancionXLista cl 
+             WHERE cl.idLista = l.idLista) AS totalCanciones
+        FROM Lista l
+        WHERE l.idUsuario = p_idUsuario
+        ORDER BY l.fechaCreacion DESC;
+
+    RETURN v_cursor;
+END;
+/* ----------- ELIMINAR CANCION DE UNA LISTA (PROCEDIMIENTO) DeleteSongFromList----------- */
+/*
+    Elimina la relacion entre una cancion y una lista en CancionXLista.
+    No elimina la cancion en si, solo la quita de la lista.
+
+    Simbologia p_resultado:
+        0 = eliminacion exitosa
+        2 = error general
+*/
+CREATE OR REPLACE PROCEDURE SP_REMOVE_CANCION_LISTA(
+    p_idLista IN CancionXLista.idLista%TYPE,
+    p_idCancion IN CancionXLista.idCancion%TYPE,
+    p_resultado OUT NUMBER
+)
+IS
+BEGIN
+    DELETE FROM CancionXLista
+    WHERE idLista = p_idLista
+      AND idCancion = p_idCancion;
+
+    COMMIT;
+    p_resultado := 0;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        p_resultado := 2;
+END;
+/* ----------- BUSCAR CANCIONES POR TITULO (FUNCION) Search----------- */
+/*
+    Busca canciones del usuario que coincidan con el titulo ingresado.
+    Usa LIKE para busqueda parcial, retorna cursor con los resultados.
+*/
+CREATE OR REPLACE FUNCTION fn_buscar_canciones(
+    p_idUsuario IN Usuario.idUsuario%TYPE,
+    p_busqueda IN VARCHAR2
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT 
+            c.idCancion,
+            c.titulo,
+            c.artista,
+            c.album,
+            c.genero,
+            c.calificacion
+        FROM Cancion c
+        JOIN CancionXUsuario cu ON c.idCancion = cu.idCancion
+        WHERE cu.idUsuario = p_idUsuario
+          AND UPPER(c.titulo) LIKE UPPER('%' || p_busqueda || '%')
+        ORDER BY c.titulo ASC;
+
+    RETURN v_cursor;
+END;
