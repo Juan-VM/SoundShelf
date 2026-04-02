@@ -29,6 +29,8 @@
 
         if ($resultado == 0) {
             $_SESSION["mensaje"] = "Lista creada correctamente";
+            header("Location: library.php");
+            exit();
         } else {
             $_SESSION["mensaje"] = "Error al crear la lista";
         }
