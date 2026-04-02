@@ -4,7 +4,7 @@
 
         public function __construct() {
             $host     = "localhost";
-            $port     = "1522";
+            $port     = "1521";
             $sid      = "ORCL";
             $user     = "SoundShelf";
             $password = "Basedatos123456";

@@ -5,6 +5,36 @@
         header("Location: ../index.php");
         exit();
     }
+
+    require_once("../db/OracleDB.php");
+
+    $db = new OracleDB();
+    $conn = $db->getConn();
+
+    $idUsuario = $_SESSION["idUsuario"];
+    $busqueda = "";
+    $cursor = null;
+    $buscando = false;
+
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["q"]) && trim($_GET["q"]) != "") {
+
+        $busqueda = trim($_GET["q"]);
+        $buscando = true;
+
+        $sqlBuscar = "BEGIN :cursor := fn_buscar_canciones(:idUsuario, :busqueda); END;";
+        $stmtBuscar = oci_parse($conn, $sqlBuscar);
+
+        $cursor = oci_new_cursor($conn);
+
+        oci_bind_by_name($stmtBuscar, ":cursor", $cursor, -1, OCI_B_CURSOR);
+        oci_bind_by_name($stmtBuscar, ":idUsuario", $idUsuario);
+        oci_bind_by_name($stmtBuscar, ":busqueda", $busqueda);
+
+        oci_execute($stmtBuscar);
+        oci_execute($cursor);
+    }
+
+    $db->close();
 ?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
@@ -93,23 +123,24 @@
         include '../includes/sideBar.php';
     ?>
 
-    <!-- TopNavBar -->
+    <!-- TopNavBar con buscador -->
     <header class="fixed top-0 right-0 left-64 h-20 z-40 bg-[#060e20]/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.12)] flex justify-between items-center px-10">
         <div class="flex items-center gap-6 flex-1 max-w-2xl">
-            <div class="relative w-full group">
+            <form method="GET" action="" class="relative w-full group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-[#ba9eff] transition-colors">search</span>
                 <input class="w-full bg-surface-container-highest border-none rounded-xl py-3 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-1 focus:ring-[#ba9eff]/40 focus:outline-none transition-all font-body text-sm"
-                 placeholder="Buscar por titulo..." type="text" value=""/>
-            </div>
+                 placeholder="Buscar por titulo..." 
+                 type="text" 
+                 name="q"
+                 value="<?php echo htmlspecialchars($busqueda); ?>"/>
+            </form>
         </div>
         <div class="flex items-center gap-6">
-
             <span class="text-sm text-on-surface font-label uppercase tracking-widest text-on-surface-variant">
-                <?php  echo $_SESSION["nombreUsuario"]; ?>
+                <?php echo $_SESSION["nombreUsuario"]; ?>
             </span>
-        
             <div class="h-8 w-[1px] bg-outline-variant/20 mx-2"></div>
-            <button class="text-sm font-label uppercase tracking-widest text-on-surface-variant hover:text-error transition-all">Salir</button>
+            <a href="logout.php" class="text-sm font-label uppercase tracking-widest text-on-surface-variant hover:text-error transition-all">Salir</a>
             <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
                 <img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf4zUw9EhAaOULoSE8epDcZTMzmDXohwVYJeXdx3QxQ1rEBqPOd4VUsp9EG-uuUH1cEBWRKbL3P12bvJ_BVfEOR7UogpHL3YzzL7jqif8zNlRkkPwSyfdhIdeRT1gdqWT3UgoveG_qZS1j5uDsemYhNg3gDuF0iW-ZsOA21kXDVa-2b9us_gjDTYaUyK0qvsjWK4twCkIyhjHi6FJ7TQbNiuf9VeTpgVJMlnB575BPHV8czyW1MkqoAcY87Zq_9vlLZPYEgee670N2"/>
             </div>
@@ -124,47 +155,88 @@
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h2 class="headline-font text-on-surface text-4xl font-extrabold tracking-tight">Resultado Busqueda</h2>
-                    <p class="text-on-surface-variant text-lg mt-1">Mostrando todas las canciones relacionadas a tu busqueda</p>
+                    <p class="text-on-surface-variant text-lg mt-1">
+                        <?php if ($buscando): ?>
+                            Mostrando resultados para: <span class="text-primary font-bold">"<?php echo htmlspecialchars($busqueda); ?>"</span>
+                        <?php else: ?>
+                            Ingresa un titulo para buscar canciones
+                        <?php endif; ?>
+                    </p>
                 </div>
             </div>
 
             <!-- Results Table -->
+            <?php if ($buscando): ?>
             <section class="bg-surface-container-low rounded-xl overflow-hidden shadow-2xl border border-outline-variant/10">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-surface-container-high/50 border-b border-outline-variant/10">
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Titulo</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Artista</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Album</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Genero</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Rating</th>
-                            <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant text-right">Gestion</th>
-                        </tr>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Titulo</th>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Artista</th>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Album</th>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Genero</th>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant">Rating</th>
+                                <th class="px-8 py-5 text-xs uppercase tracking-widest font-bold text-on-surface-variant text-right">Gestion</th>
+                            </tr>
                         </thead>
                         <tbody class="divide-y divide-outline-variant/5">
-                            <!-- Row 1 -->
-                            <tr class="group hover:bg-surface-bright transition-colors">
-                            <td class="px-8 py-6">
-                                <div class="flex items-center gap-4">
-                                    <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform"
-                                     src="../images/musicaIcono.png"/>
-                                    <span class="font-semibold text-on-surface text-base">Titulo</span>
-                                </div>
-                            </td>
-                            <td class="px-8 py-6 text-on-surface-variant font-medium">Artista</td>
-                            <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">Album</td>
-                            <td class="px-8 py-6"><span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">Genero</span></td>
-                            <td class="px-8 py-6"><div class="flex items-center gap-2"><span class="text-primary font-black text-lg">9.2</span></div></td>
-                            <td class="px-8 py-6 text-right"><div class="flex justify-end gap-3">
-                                <a href="editSong.php" class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg"><span class="material-symbols-outlined">edit</span></a> 
-                            </td>
-                        </tr>
-                            
+                            <?php 
+                                $hayResultados = false;
+                                while ($row = oci_fetch_assoc($cursor)): 
+                                    $hayResultados = true;
+                            ?>
+                                <tr class="group hover:bg-surface-bright transition-colors">
+                                    <td class="px-8 py-6">
+                                        <div class="flex items-center gap-4">
+                                            <img alt="Track Art" class="w-12 h-12 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform"
+                                             src="../images/musicaIcono.png"/>
+                                            <span class="font-semibold text-on-surface text-base">
+                                                <?php echo $row['TITULO']; ?>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-6 text-on-surface-variant font-medium">
+                                        <?php echo $row['ARTISTA']; ?>
+                                    </td>
+                                    <td class="px-8 py-6 text-on-surface-variant/80 italic font-body">
+                                        <?php echo $row['ALBUM']; ?>
+                                    </td>
+                                    <td class="px-8 py-6">
+                                        <span class="bg-surface-variant text-on-surface-variant text-[10px] px-2 py-1 rounded-full uppercase tracking-tighter font-bold">
+                                            <?php echo $row['GENERO']; ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-6">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-primary font-black text-lg">
+                                                <?php echo $row['CALIFICACION']; ?>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-6 text-right">
+                                        <div class="flex justify-end gap-3">
+                                            <a href="song.php?idCancion=<?php echo $row['IDCANCION']; ?>" 
+                                                class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 rounded-lg">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+
+                            <?php if (!$hayResultados): ?>
+                                <tr>
+                                    <td colspan="6" class="px-8 py-12 text-center text-on-surface-variant font-semibold">
+                                        No se encontraron canciones con ese titulo
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </section>
+            <?php endif; ?>
 
             <!-- End of results -->
             <div class="mt-12 text-center">

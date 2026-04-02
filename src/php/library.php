@@ -13,6 +13,19 @@
 
     $idUsuario = $_SESSION["idUsuario"];
 
+    // Obtener todas las listas del usuario
+    $sqlListas = "BEGIN :cursor := fn_obtener_listas_usuario(:idUsuario); END;";
+    $stmtListas = oci_parse($conn, $sqlListas);
+
+    $cursor = oci_new_cursor($conn);
+
+    oci_bind_by_name($stmtListas, ":cursor", $cursor, -1, OCI_B_CURSOR);
+    oci_bind_by_name($stmtListas, ":idUsuario", $idUsuario);
+
+    oci_execute($stmtListas);
+    oci_execute($cursor);
+
+    $db->close();
 ?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
@@ -107,6 +120,16 @@
     <!-- Main Content Canvas -->
     <main class="ml-64 pt-28 px-12 pb-24 min-h-screen">
 
+        <!-- Mensaje confirmacion -->
+        <?php if (isset($_SESSION["mensaje"])): ?>
+            <div class="mb-6 p-4 rounded-xl bg-green-500/20 text-green-300 font-semibold text-center">
+                <?php 
+                    echo $_SESSION["mensaje"]; 
+                    unset($_SESSION["mensaje"]);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Header & Tabs -->
         <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div>
@@ -124,20 +147,24 @@
             </a>
         </div>
 
-
-
-
-
         <!-- Grid of Playlists -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            <a href="playlist.php" class="group cursor-pointer">
-                <div class="relative aspect-square rounded-2xl overflow-hidden mb-4 shadow-xl">
-                    <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJTWPaxVrAjW_qaZfQ4D1_jrotDVXaZ9Y3QK3ByGJ84whBK4JznZzvkn7rww898hykLmkjLoEBQ30MrDg7kwiLhfzmwSVa-i6_Vj8ZPvTwWOlVpw24svq8wgLOXZB-VqLvHGMsVvkEyYMsYE4Tjn4k6XUVgAgxQ53TSwGvAIBcbTGBIZCPHilrXax-LGw-YHzhjuhRTdDuhtym94by8HiGUE3oms2IRlZQHieJeHlUi1UWENPJdchS1KD_435jhqoMLQTNCZoVBeJK" alt="Late Night Sessions"/>
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-                </div>
-                <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">Titulo</h4>
-                <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">TotCanciones+" Canciones"</p>
-            </a>
+            <?php while ($row = oci_fetch_assoc($cursor)): ?>
+                <a href="playlist.php?idLista=<?php echo $row['IDLISTA']; ?>" class="group cursor-pointer">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-4 shadow-xl">
+                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                            src="../images/playlist.jpg" 
+                            alt="<?php echo $row['TITULO']; ?>"/>
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                    </div>
+                    <h4 class="font-headline font-bold text-lg mb-1 group-hover:text-primary transition-colors">
+                        <?php echo $row['TITULO']; ?>
+                    </h4>
+                    <p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">
+                        <?php echo $row['TOTALCANCIONES']; ?> Canciones
+                    </p>
+                </a>
+            <?php endwhile; ?>
         </div>
 
     </main>

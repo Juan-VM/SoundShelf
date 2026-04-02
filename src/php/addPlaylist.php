@@ -1,4 +1,44 @@
-<?php ?>
+<?php
+    session_start();
+
+    if (!isset($_SESSION["idUsuario"])) {
+        header("Location: ../index.php");
+        exit();
+    }
+
+    require_once("../db/OracleDB.php");
+
+    $db = new OracleDB();
+    $conn = $db->getConn();
+
+    $idUsuario = $_SESSION["idUsuario"];
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $titulo = $_POST["playlist_title"];
+        $resultado = 0;
+
+        $sqlInsertLista = "BEGIN SP_INSERT_LISTA(:idUsuario, :titulo, :resultado); END;";
+        $stmtInsertLista = oci_parse($conn, $sqlInsertLista);
+
+        oci_bind_by_name($stmtInsertLista, ":idUsuario", $idUsuario);
+        oci_bind_by_name($stmtInsertLista, ":titulo", $titulo);
+        oci_bind_by_name($stmtInsertLista, ":resultado", $resultado, 32);
+
+        oci_execute($stmtInsertLista);
+
+        if ($resultado == 0) {
+            $_SESSION["mensaje"] = "Lista creada correctamente";
+        } else {
+            $_SESSION["mensaje"] = "Error al crear la lista";
+        }
+
+        header("Location: addPlaylist.php");
+        exit();
+    }
+
+    $db->close();
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
@@ -81,7 +121,7 @@
 <body class="bg-background text-on-surface">
 
     <!-- TopNavBar -->
-        <?php include '../includes/topBar.php'; ?>
+    <?php include '../includes/topBar.php'; ?>
 
     <!-- SideNavBar -->
     <?php
@@ -103,13 +143,24 @@
             <!-- Form Container -->
             <div class="bg-surface-container-low rounded-2xl p-10 shadow-[0_40px_80px_rgba(0,0,0,0.3)] relative overflow-hidden">
                 <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 blur-[80px] rounded-full"></div>
+
+                <!-- Mensaje confirmacion -->
+                <?php if (isset($_SESSION["mensaje"])): ?>
+                    <div class="mb-6 p-4 rounded-xl bg-green-500/20 text-green-300 font-semibold text-center">
+                        <?php 
+                            echo $_SESSION["mensaje"]; 
+                            unset($_SESSION["mensaje"]);
+                        ?>
+                    </div>
+                <?php endif; ?>
+
                 <form method="POST" action="" class="relative z-10 space-y-10">
                     <div class="space-y-3">
                         <label class="block text-sm font-bold text-on-surface-variant uppercase tracking-widest px-1" for="playlist-title">
                             Titulo de la lista
                         </label>
                         <input class="w-full bg-surface-container-highest border-none rounded-xl px-6 py-5 text-xl font-headline text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/40 transition-all outline-none"
-                         id="playlist-title" name="playlist_title" placeholder="Titulo" type="text"/>
+                         id="playlist-title" name="playlist_title" placeholder="Titulo" type="text" required/>
                     </div>
                     <div class="flex flex-col gap-4">
                         <button class="w-full py-5 rounded-xl bg-gradient-to-br from-primary-dim to-primary text-black font-extrabold text-lg font-headline shadow-[0_10px_30px_rgba(186,158,255,0.2)] hover:shadow-[0_15px_40px_rgba(186,158,255,0.3)] transition-all active:scale-[0.98]"
@@ -119,6 +170,7 @@
                         <a href="library.php" class="w-full py-4 text-on-surface-variant font-bold text-sm hover:text-on-surface transition-colors uppercase tracking-widest text-center block">
                             Cancelar
                         </a>
+                    </div>
                 </form>
             </div>
         </div>
