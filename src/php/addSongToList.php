@@ -12,9 +12,10 @@
     $conn = $db->getConn();
 
     $idUsuario = $_SESSION["idUsuario"];
-    // =========================
-    // 🟢 SI VIENE DEL FORM (POST)
-    // =========================
+    
+
+    // SI VIENE DEL FORM (POST)
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $idLista = $_GET['idLista'];
@@ -44,9 +45,9 @@
     }
 
 
-    // =========================
-    // 🔵 SI ES GET (CARGAR PÁGINA)
-    // =========================
+
+    // CARGAR PÁGINA
+
 
     $idLista = $_GET["idLista"];
 

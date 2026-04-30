@@ -165,25 +165,50 @@
                     </div>
                 <?php endif; ?>
 
-                <!-- Input Groups -->
+                
                 <div class="space-y-4">
                     <div class="space-y-2">
                         <label class="font-label text-xs uppercase font-semibold text-on-surface-variant tracking-wider ml-1" for="username">
                             Correo
                         </label>
+
                         <div class="relative group">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
-                            <input class="w-full bg-surface-container-highest border-none rounded-lg py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline/60 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
-                             id="username" name="username" placeholder="correo@gmail.com" type="text"/>
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">
+                                person
+                            </span>
+
+                            <input 
+                                class="w-full bg-surface-container-highest border-none rounded-lg py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline/60 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+                                id="username"
+                                name="username"
+                                placeholder="correo@gmail.com"
+                                type="text"
+                            />
                         </div>
                     </div>
+
                     <div class="space-y-2">
                         <div class="relative group">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
-                            <input class="w-full bg-surface-container-highest border-none rounded-lg py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline/60 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
-                             id="password" name="password" placeholder="••••••••" type="password"/>
-                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface" type="button">
-                                <span class="material-symbols-outlined text-xl">visibility</span>
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">
+                                lock
+                            </span>
+
+                            <input 
+                                class="w-full bg-surface-container-highest border-none rounded-lg py-3.5 pl-12 pr-12 text-on-surface placeholder:text-outline/60 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+                                id="password"
+                                name="password"
+                                placeholder="••••••••"
+                                type="password"
+                            />
+
+                            <button 
+                                id="togglePassword"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
+                                type="button"
+                            >
+                                <span id="toggleIcon" class="material-symbols-outlined text-xl">
+                                    visibility
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -196,6 +221,22 @@
                     </button>
                 </div>
             </form>
+
+            <script>
+                const passwordInput = document.getElementById('password');
+                const togglePassword = document.getElementById('togglePassword');
+                const toggleIcon = document.getElementById('toggleIcon');
+
+                togglePassword.addEventListener('click', () => {
+                    const isPassword = passwordInput.type === 'password';
+
+                    passwordInput.type = isPassword ? 'text' : 'password';
+
+                    toggleIcon.textContent = isPassword 
+                        ? 'visibility_off' 
+                        : 'visibility';
+                });
+            </script>
 
             <footer class="text-center mt-10">
                 <p class="text-sm text-on-surface-variant">

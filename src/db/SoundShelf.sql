@@ -56,9 +56,20 @@ CREATE TABLE CancionXUsuario(
         FOREIGN KEY(idCancion) REFERENCES Cancion(idCancion)
 );
 
+-- DROPS por aquello
+/* ----------- 3 NIVEL DE JERARQUIA ----------- */
+DROP TABLE CancionXUsuario CASCADE CONSTRAINTS;
+DROP TABLE CancionXLista CASCADE CONSTRAINTS;
+
+/* ----------- 2 NIVEL DE JERARQUIA ----------- */
+DROP TABLE Cancion CASCADE CONSTRAINTS;
+DROP TABLE Lista CASCADE CONSTRAINTS;
+
+/* ----------- 1 NIVEL DE JERARQUIA ----------- */
+DROP TABLE Usuario CASCADE CONSTRAINTS;
+
 
 /* ----------- LOGICA CRUD ----------- */
-
 /* 
     Este procedimiento es para actualizar los datos en la tabla usuario
     por ahora se usan en:
@@ -79,6 +90,45 @@ BEGIN
     COMMIT;
 END;
 
+
+/*
+    Este procedimiento lo que hace es eliminar al usuario que recibe como parametro
+    pero antes de hacerlo elimina las coincidencias de este user en
+    las otras tablas, osea elimina sus relaciones para evitar conflictos de 
+    dependencias, una vez hecho eso elimina al usuario
+*/
+CREATE OR REPLACE PROCEDURE SP_DELETE_USUARIO(
+    p_idUsuario IN  Usuario.idUsuario%TYPE,
+    p_resultado OUT NUMBER
+)
+IS
+BEGIN
+    -- Eliminar canciones de sus listas
+    DELETE FROM CancionXLista
+    WHERE idLista IN (SELECT idLista FROM Lista WHERE idUsuario = p_idUsuario);
+
+    -- Eliminar sus listas
+    DELETE FROM Lista WHERE idUsuario = p_idUsuario;
+
+    -- Eliminar sus relaciones con canciones
+    DELETE FROM CancionXUsuario WHERE idUsuario = p_idUsuario;
+
+    -- Eliminar el usuario
+    DELETE FROM Usuario WHERE idUsuario = p_idUsuario;
+
+    COMMIT;
+    p_resultado := 0;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        p_resultado := 2;
+END;
+
+
+/*
+    Este lo que hace que recibe un id y devuelve toda la informacion relacionada
+    de esa coincidencia en la tabla cancion. Esto para obtener una cancion en especifico.
+*/
 CREATE OR REPLACE PROCEDURE SP_GET_CANCION(
     p_idCancion IN Cancion.idCancion%TYPE,
     p_titulo OUT Cancion.titulo%TYPE,
@@ -97,6 +147,9 @@ BEGIN
 END;
 
 
+/*
+    Este procedimeinto recibe los cambios para una cancion y realiza la actualizacion
+*/
 CREATE OR REPLACE PROCEDURE SP_UPDATE_CANCION(
     p_idCancion IN Cancion.idCancion%TYPE,
     p_titulo IN Cancion.titulo%TYPE,
@@ -120,6 +173,11 @@ BEGIN
     COMMIT;
 END;
 
+
+/*
+    Este procedimeinto elimina una cancion, pero antes elimina sus 
+    dependencias en otras tablas para evitar conflictos.
+*/
 CREATE OR REPLACE PROCEDURE SP_DELETE_CANCION(
     p_idCancion IN Cancion.idCancion%TYPE
 )
@@ -354,14 +412,12 @@ BEGIN
 END;
 
 
-/*
-    El proyecto tiene 8 epicas con varias funcionalidades c/u, estas son las funcionalidades que se podian crear
-    a nivel de BD de 3 epicas (mas o menos un 30% del proyecto). Las epicas que incluimos en esta entrega son:
-    Epica 1, 2 y 7.
-*/
-
 /* ----------- LOGICA DE AGREGAR CANCION ----------- */
 
+/*
+    Este procedimeinto recibe las datos para agregar una cancion nueva y la relaciona
+    con su usuario, osea el creador de la cancion.
+*/
 CREATE OR REPLACE PROCEDURE SP_INSERT_CANCION(
     p_idUsuario IN Usuario.idUsuario%TYPE,
     p_titulo IN Cancion.titulo%TYPE,
@@ -385,7 +441,41 @@ BEGIN
 
     COMMIT;
 END;
----Logica Cambios CA
+
+
+/*
+    Este procedimento agrega a una lista la cancion, para eso usa
+    el id de la cancion y la lista a la que va a ser agregada.
+    Si la cancion ya existia no hace nada, si no existe la agrega.
+*/
+CREATE OR REPLACE PROCEDURE sp_agregar_cancion_a_lista(
+    p_idLista   IN CancionXLista.idLista%TYPE,
+    p_idCancion IN CancionXLista.idCancion%TYPE
+)
+IS
+    v_count NUMBER;
+BEGIN
+    -- Verificar si ya existe
+    SELECT COUNT(*)
+    INTO v_count
+    FROM CancionXLista
+    WHERE idLista = p_idLista
+      AND idCancion = p_idCancion;
+
+    -- Si no existe, insertar
+    IF v_count = 0 THEN
+        INSERT INTO CancionXLista(idLista, idCancion)
+        VALUES (p_idLista, p_idCancion);
+    END IF;
+
+END;
+
+
+
+
+
+---Logica Cristhian
+
 /* ----------- OBTENER DATOS DE UNA LISTA (PROCEDIMIENTO) Playlist----------- */
 /*
     Recibe el idLista y devuelve el titulo, fecha y total de canciones.
@@ -572,3 +662,240 @@ BEGIN
 
     RETURN v_cursor;
 END;
+
+
+
+
+
+
+/* ------------------------------ Rodrigo*/
+/* ---------------------- TRIGGERS ---------------------- */
+
+
+
+-- TRIGGER 1: Validacion de calificacion antes de insertar o actualizar una cancion
+-- Si la calificacion esta fuera del rango 1-10 lanza un error y cancela la operacion.
+CREATE OR REPLACE TRIGGER trg_validar_calificacion
+BEFORE INSERT OR UPDATE ON Cancion
+FOR EACH ROW
+BEGIN
+    IF :NEW.calificacion < 1 OR :NEW.calificacion > 10 THEN
+        RAISE_APPLICATION_ERROR(-20001,
+            'Error: La calificacion debe estar entre 1 y 10. Valor recibido: ' || :NEW.calificacion);
+    END IF;
+END;
+
+
+-- TRIGGER 2: Normalizacion de datos - convierte titulo y artista a formato titulo (primera letra mayuscula)
+-- Se ejecuta antes de insertar o actualizar en Cancion para mantener consistencia en los datos.
+CREATE OR REPLACE TRIGGER trg_normalizar_cancion
+BEFORE INSERT OR UPDATE ON Cancion
+FOR EACH ROW
+BEGIN
+    -- Convierte el titulo a mayusculas iniciales
+    :NEW.titulo  := INITCAP(:NEW.titulo);
+    -- Convierte el artista a mayusculas iniciales
+    :NEW.artista := INITCAP(:NEW.artista);
+    -- Convierte el album a mayusculas iniciales
+    :NEW.album   := INITCAP(:NEW.album);
+    -- Convierte el genero a mayuscula inicial
+    :NEW.genero  := INITCAP(:NEW.genero);
+END;
+
+
+-- TRIGGER 3: Validacion de correo en Usuario
+-- Verifica que el correo tenga un formato valido (contenga @ y un punto) antes de insertar o actualizar.
+CREATE OR REPLACE TRIGGER trg_validar_correo_usuario
+BEFORE INSERT OR UPDATE ON Usuario
+FOR EACH ROW
+BEGIN
+    IF INSTR(:NEW.correo, '@') = 0 OR INSTR(:NEW.correo, '.') = 0 THEN
+        RAISE_APPLICATION_ERROR(-20002,
+            'Error: El correo ingresado no tiene un formato valido: ' || :NEW.correo);
+    END IF;
+END;
+
+
+-- TRIGGER 4: Validacion de titulo de lista no vacio
+-- Impide que se inserte o actualice una lista con titulo en blanco o solo espacios.
+CREATE OR REPLACE TRIGGER trg_validar_titulo_lista
+BEFORE INSERT OR UPDATE ON Lista
+FOR EACH ROW
+BEGIN
+    IF TRIM(:NEW.titulo) IS NULL OR LENGTH(TRIM(:NEW.titulo)) = 0 THEN
+        RAISE_APPLICATION_ERROR(-20003,
+            'Error: El titulo de la lista no puede estar vacio.');
+    END IF;
+
+    -- Normaliza el titulo quitando espacios extras
+    :NEW.titulo := TRIM(:NEW.titulo);
+END;
+
+
+-- TRIGGER 5: Fecha automatica en Lista
+-- Asigna automaticamente la fecha actual si no se proporciona una al insertar.
+CREATE OR REPLACE TRIGGER trg_fecha_lista
+BEFORE INSERT ON Lista
+FOR EACH ROW
+BEGIN
+    IF :NEW.fechaCreacion IS NULL THEN
+        :NEW.fechaCreacion := SYSDATE;
+    END IF;
+END;
+
+
+
+
+
+/* ---------------------- VISTAS ---------------------- */
+SET SERVEROUTPUT ON;
+
+
+
+-- VISTA 1: Resumen completo de canciones por usuario
+-- Muestra cada usuario con el total de canciones, artistas distintos,
+-- su cancion mejor calificada y el promedio de calificaciones.
+CREATE OR REPLACE VIEW vw_resumen_usuario AS
+    SELECT
+        u.idUsuario,
+        u.nombreUsuario,
+        u.correo,
+        COUNT(c.idCancion) AS total_canciones,
+        COUNT(DISTINCT c.artista)AS total_artistas,
+        ROUND(AVG(c.calificacion), 2) AS promedio_calificacion,
+        MAX(c.calificacion) AS mejor_calificacion,
+        MIN(c.calificacion) AS peor_calificacion,
+        (SELECT COUNT(*) FROM Lista l
+         WHERE l.idUsuario = u.idUsuario) AS total_listas
+    FROM Usuario u
+    LEFT JOIN CancionXUsuario cu ON u.idUsuario = cu.idUsuario
+    LEFT JOIN Cancion c ON cu.idCancion = c.idCancion
+    GROUP BY u.idUsuario, u.nombreUsuario, u.correo;
+
+-- Bloque anonimo para probar la vista
+DECLARE
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('===== RESUMEN DE USUARIOS =====');
+
+    FOR r IN (
+        SELECT *
+        FROM vw_resumen_usuario
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            'Usuario: ' || r.nombreUsuario ||
+            ' | Correo: ' || r.correo ||
+            ' | Canciones: ' || r.total_canciones ||
+            ' | Artistas: ' || r.total_artistas ||
+            ' | Promedio: ' || r.promedio_calificacion ||
+            ' | Mejor: ' || r.mejor_calificacion ||
+            ' | Peor: ' || r.peor_calificacion ||
+            ' | Listas: ' || r.total_listas
+        );
+    END LOOP;
+END;
+
+
+
+
+-- VISTA 2: Detalle completo de listas con informacion de canciones
+-- Muestra cada lista con su usuario dueno, la cantidad de canciones,
+-- el promedio de calificacion de las canciones que contiene
+-- y los generos musicales presentes en ella.
+CREATE OR REPLACE VIEW vw_detalle_listas AS
+    SELECT
+        l.idLista,
+        l.titulo AS titulo_lista,
+        l.fechaCreacion,
+        u.idUsuario,
+        u.nombreUsuario,
+        COUNT(cl.idCancion) AS total_canciones,
+        ROUND(AVG(c.calificacion), 2) AS promedio_calificacion,
+        MAX(c.calificacion) AS cancion_mejor_calif,
+        -- Subconsulta: cantidad de generos distintos en la lista
+        (SELECT COUNT(DISTINCT c2.genero)
+         FROM Cancion c2
+         JOIN CancionXLista cl2 ON c2.idCancion = cl2.idCancion
+         WHERE cl2.idLista = l.idLista) AS total_generos_distintos
+    FROM Lista l
+    JOIN Usuario u ON l.idUsuario  = u.idUsuario
+    LEFT JOIN CancionXLista cl ON l.idLista = cl.idLista
+    LEFT JOIN Cancion c ON cl.idCancion = c.idCancion
+    GROUP BY l.idLista, l.titulo, l.fechaCreacion, u.idUsuario, u.nombreUsuario;
+
+
+-- Bloque anonimo para probar la vista
+DECLARE
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('===== DETALLE DE LISTAS =====');
+
+    FOR r IN (
+        SELECT *
+        FROM vw_detalle_listas
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            'Lista: ' || r.titulo_lista ||
+            ' | Usuario: ' || r.nombreUsuario ||
+            ' | Fecha: ' || TO_CHAR(r.fechaCreacion, 'DD/MM/YYYY') ||
+            ' | Canciones: ' || r.total_canciones ||
+            ' | Promedio: ' || r.promedio_calificacion ||
+            ' | Mejor Calif: ' || r.cancion_mejor_calif ||
+            ' | Generos Distintos: ' || r.total_generos_distintos
+        );
+    END LOOP;
+END;
+
+
+
+
+-- VISTA 3: Ranking de canciones mas agregadas en listas
+-- Muestra que canciones aparecen en mas listas de usuarios distintos,
+-- junto con su informacion completa y estadisticas de calificacion.
+CREATE OR REPLACE VIEW vw_ranking_canciones AS
+    SELECT
+        c.idCancion,
+        c.titulo,
+        c.artista,
+        c.album,
+        c.genero,
+        c.calificacion,
+        -- Total de usuarios que tienen esta cancion en su libreria
+        (SELECT COUNT(*)
+         FROM CancionXUsuario cu2
+         WHERE cu2.idCancion = c.idCancion) AS total_usuarios_con_cancion,
+        -- Total de listas en las que aparece esta cancion
+        COUNT(cl.idLista) AS total_listas_incluida,
+        -- Clasificacion segun calificacion
+        CASE
+            WHEN c.calificacion >= 8 THEN 'Excelente'
+            WHEN c.calificacion >= 5 THEN 'Regular'
+            ELSE 'Baja'
+        END AS clasificacion
+    FROM Cancion c
+    LEFT JOIN CancionXLista cl ON c.idCancion = cl.idCancion
+    GROUP BY c.idCancion, c.titulo, c.artista, c.album, c.genero, c.calificacion
+    ORDER BY total_listas_incluida DESC, c.calificacion DESC;
+
+
+-- Bloque anonimo para probar la vista
+DECLARE
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('===== RANKING DE CANCIONES =====');
+
+    FOR r IN (
+        SELECT *
+        FROM vw_ranking_canciones
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            'Cancion: ' || r.titulo ||
+            ' | Artista: ' || r.artista ||
+            ' | Album: ' || r.album ||
+            ' | Genero: ' || r.genero ||
+            ' | Calif: ' || r.calificacion ||
+            ' | Usuarios: ' || r.total_usuarios_con_cancion ||
+            ' | Listas: ' || r.total_listas_incluida ||
+            ' | Clasificacion: ' || r.clasificacion
+        );
+    END LOOP;
+END;
+    
+-- Fin del documento

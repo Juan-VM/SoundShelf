@@ -138,6 +138,7 @@
                 </div>
 
                 <form method="POST" action="" class="space-y-6">
+
                     <!-- Error Placeholder -->
                     <?php if ($mensaje != ""): ?>
                         <div class="flex items-center gap-3 p-4 border rounded-lg text-sm
@@ -154,49 +155,107 @@
                     <?php endif; ?>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
                         <!-- Full Name -->
                         <div class="space-y-2">
                             <label class="block font-label text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1"
-                             for="fullname">Nombre Usuario
+                                for="fullname">
+                                Nombre Usuario
                             </label>
+
                             <div class="relative group">
-                                <input class="w-full h-14 px-5 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
-                                 id="fullname" name="fullname" placeholder="Usuario" type="text" required/>
+                                <input 
+                                    class="w-full h-14 px-5 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+                                    id="fullname"
+                                    name="fullname"
+                                    placeholder="Usuario"
+                                    type="text"
+                                    required
+                                />
                             </div>
                         </div>
-                     
+
                     </div>
+
                     <!-- Email -->
                     <div class="space-y-2">
                         <label class="block font-label text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1"
-                         for="email">Correo
+                            for="email">
+                            Correo
                         </label>
+
                         <div class="relative group">
-                            <input class="w-full h-14 px-5 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none" 
-                             id="email" name="email" placeholder="correo@ejemplo.com" type="email" required/>
+                            <input 
+                                class="w-full h-14 px-5 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+                                id="email"
+                                name="email"
+                                placeholder="correo@ejemplo.com"
+                                type="email"
+                                required
+                            />
                         </div>
                     </div>
+
                     <!-- Password -->
                     <div class="space-y-2">
                         <label class="block font-label text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1"
-                         for="password">Password
+                            for="password">
+                            Password
                         </label>
+
                         <div class="relative group">
-                            <input class="w-full h-14 px-5 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
-                             id="password" name="password" placeholder="••••••••" type="password" required/>
-                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface" type="button">
-                                <span class="material-symbols-outlined text-xl">visibility</span>
+
+                            <input 
+                                class="w-full h-14 px-5 pr-14 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+                                id="password"
+                                name="password"
+                                placeholder="••••••••"
+                                type="password"
+                                required
+                            />
+
+                            <button 
+                                id="togglePassword"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
+                                type="button"
+                            >
+                                <span id="toggleIcon" class="material-symbols-outlined text-xl">
+                                    visibility
+                                </span>
                             </button>
+
                         </div>
                     </div>
+
                     <!-- Primary Action -->
                     <div class="pt-4">
-                        <button class="sonic-gradient-btn w-full h-14 rounded-xl font-headline font-bold text-on-primary-fixed text-lg shadow-[0_8px_30px_rgba(186,158,255,0.25)] hover:shadow-[0_8px_30px_rgba(186,158,255,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-                         type="submit">
+                        <button 
+                            class="sonic-gradient-btn w-full h-14 rounded-xl font-headline font-bold text-on-primary-fixed text-lg shadow-[0_8px_30px_rgba(186,158,255,0.25)] hover:shadow-[0_8px_30px_rgba(186,158,255,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                            type="submit"
+                        >
                             Crear Cuenta
                         </button>
                     </div>
+
                 </form>
+
+                <script>
+                    const passwordInput = document.getElementById('password');
+                    const togglePassword = document.getElementById('togglePassword');
+                    const toggleIcon = document.getElementById('toggleIcon');
+
+                    togglePassword.addEventListener('click', () => {
+
+                        const isPassword = passwordInput.type === 'password';
+
+                        passwordInput.type = isPassword ? 'text' : 'password';
+
+                        toggleIcon.textContent = isPassword
+                            ? 'visibility_off'
+                            : 'visibility';
+
+                    });
+                </script>
                 <!-- Footer Link -->
                 <div class="mt-10 text-center">
                     <p class="text-on-surface-variant text-sm">
